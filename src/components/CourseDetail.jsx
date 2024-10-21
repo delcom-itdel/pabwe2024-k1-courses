@@ -4,19 +4,24 @@ import { courseItemShape } from "./CourseItem";
 import { postedAt } from "../utils/tools";
 import { FaClock, FaPenToSquare, FaUpload } from "react-icons/fa6";
 import api from "../utils/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { asyncDetailCourse } from "../states/courses/action";
 import { useParams } from "react-router-dom";
 
 function CourseDetail({ course, onEditCourse }) {
   const { id } = useParams();
   const dispatch = useDispatch();
+
+  // State variables for comments and content
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [activeTab, setActiveTab] = useState("content");
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(course?.title || "");
   const [editedDescription, setEditedDescription] = useState(
     course?.description || ""
   );
-  const [previewCover, setPreviewCover] = useState(course?.cover || null); // Default to existing cover
+  const [previewCover, setPreviewCover] = useState(course?.cover || null);
   const [isUploading, setIsUploading] = useState(false);
 
   const fileInputRef = useRef(null);
@@ -31,16 +36,53 @@ function CourseDetail({ course, onEditCourse }) {
     if (course) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
-      setPreviewCover(course.cover); // Set the existing cover if available
+      setPreviewCover(course.cover);
+      fetchComments(); // Fetch comments on course load
     }
   }, [course]);
+
+  // Fetch comments from the API
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(
+        `https://public-api.delcom.org/api/v1/courses/${id}/comments`
+      );
+      const commentsData = await response.json();
+      setComments(commentsData); // Assuming the API returns a list of comments
+    } catch (error) {
+      console.error("Failed to fetch comments:", error.message);
+    }
+  };
+
+  // Post a new comment to the API
+  const postComment = async () => {
+    if (newComment.trim() === "") return;
+
+    try {
+      const response = await fetch(
+        `https://public-api.delcom.org/api/v1/courses/${id}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: newComment }),
+        }
+      );
+      const newCommentData = await response.json();
+      setComments((prevComments) => [...prevComments, newCommentData]); // Append the new comment
+      setNewComment(""); // Clear the input field after submission
+    } catch (error) {
+      console.error("Failed to post comment:", error.message);
+    }
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const previewURL = URL.createObjectURL(file);
-      setPreviewCover(previewURL); // Show the preview immediately
-      handleCoverUpload(file); // Upload the cover
+      setPreviewCover(previewURL);
+      handleCoverUpload(file);
     }
   };
 
@@ -52,7 +94,7 @@ function CourseDetail({ course, onEditCourse }) {
         cover: file,
       });
       console.log("Cover updated:", message);
-      dispatch(asyncDetailCourse(course.id)); // Refresh the course after upload
+      dispatch(asyncDetailCourse(course.id));
     } catch (error) {
       console.error("Failed to upload cover:", error.message);
     }
@@ -66,6 +108,65 @@ function CourseDetail({ course, onEditCourse }) {
   const handleSaveChanges = () => {
     onEditCourse(course.id, editedTitle, editedDescription);
     setIsEditing(false);
+  };
+
+  // Render Comments Tab
+  const renderCommentsTab = () => (
+    <div className="comments-tab">
+      <h6>Comments</h6>
+      <ul className="list-group">
+        {comments.map((comment) => (
+          <li key={comment.id} className="list-group-item">
+            <strong>{comment.author}</strong>: {comment.content}
+            <div className="text-muted">
+              <small>{postedAt(comment.created_at)}</small>
+            </div>
+          </li>
+        ))}
+      </ul>
+      {/* Add new comment */}
+      <div className="mt-3">
+        <textarea
+          className="form-control"
+          rows="3"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Add your comment..."
+        />
+        <button
+          className="btn btn-primary mt-2"
+          onClick={postComment}
+          disabled={newComment.trim() === ""}
+        >
+          Post Comment
+        </button>
+      </div>
+    </div>
+  );
+
+  // Render Content Tab
+  const renderContentTab = () => {
+    const youtubeLink = course.youtube || ""; // Fetch from the course data
+    return (
+      <div className="content-tab">
+        <h6>Content</h6>
+        {youtubeLink ? (
+          <div className="mt-3">
+            <iframe
+              width="560"
+              height="315"
+              src={youtubeLink.replace("watch?v=", "embed/")} // Adjust link for embedding
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        ) : (
+          <p>No YouTube video available.</p>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -107,7 +208,7 @@ function CourseDetail({ course, onEditCourse }) {
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-center">
-                <h5 className="mb-0">{course.title}</h5>
+                <h5 className="mb-0">{editedTitle}</h5>
               </div>
 
               <div>
@@ -190,6 +291,29 @@ function CourseDetail({ course, onEditCourse }) {
             </div>
           </div>
         </div>
+
+        {/* Tabs for Content and Comments */}
+        <div className="tabs mt-4">
+          <button
+            className={`btn btn-link ${
+              activeTab === "content" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("content")}
+          >
+            Content
+          </button>
+          <button
+            className={`btn btn-link ${
+              activeTab === "comments" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("comments")}
+          >
+            Comments
+          </button>
+        </div>
+
+        {/* Tab content */}
+        {activeTab === "content" ? renderContentTab() : renderCommentsTab()}
       </div>
     </div>
   );
