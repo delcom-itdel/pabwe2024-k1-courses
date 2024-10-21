@@ -1,7 +1,7 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import api from "../../utils/api";
 import { showErrorDialog } from "../../utils/tools";
-
+ssss;
 const ActionType = {
   SET_IS_AUTH_REGISTER: "SET_IS_AUTH_REGISTER",
 };
