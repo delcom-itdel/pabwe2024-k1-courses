@@ -20,8 +20,10 @@ function CourseDetail({ course }) {
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("contents");
   const fileInputRef = useRef(null);
+  const [showAddCommentForm, setShowAddCommentForm] =  useState(false);
   const [newComment, setNewComment] = useState(""); // State for new comment input
-  const [comments, setComments] = useState(course.comments || []); // State to manage comments
+  const [newRating, setNewRating] = useState(0); // State for new comment input
+
   const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
   const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
   const [newContentYoutube, setNewContentYoutube] = useState("");
@@ -37,7 +39,6 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
-      setComments(course.comments || []);
     }
   }, [course]);
 
@@ -91,26 +92,30 @@ function CourseDetail({ course }) {
     }
   };
 
-  const handleCommentChange = (event) => {
-    setNewComment(event.target.value);
-  };
 
   const handleAddComment = async () => {
-    if (newComment.trim() === "") return;
-
+    if (newComment.trim() === "" || rating === 0) return; // Ensure both comment and rating are provided
+  
     try {
-      const updatedComments = await api.postAddComment({
-        id: course.id,
-        comment: newComment,
-      });
-
-      setComments(updatedComments); // Update comments state with the new list
-      setNewComment(""); // Clear the input field
+      await dispatch(
+        asyncChangeStudentRatings({
+          id: course.id,
+          ratings: newRating, // Assuming 'rating' holds the user's rating value
+          comment: newComment,
+        })
+      );
+  
+      setNewComment(""); // Clear the input field after submission
+      setNewRating(0); // Reset the rating after submission (assuming you have a state for rating)
+      setShowAddCommentForm(false); // Hide the form after adding the comment
       dispatch(asyncDetailCourse(course.id)); // Refresh course data to get the updated comments
     } catch (error) {
       console.error("Failed to add comment:", error.message);
     }
   };
+  
+  
+  
 
   const handleAddContent = async () => {
     if (newContentTitle.trim() === "" || newContentYoutube.trim() === "")
@@ -136,6 +141,7 @@ function CourseDetail({ course }) {
   const enrolledStudentsCount = course.students ? course.students.length : 0;
 
   return (
+    
     <div className="card mt-3">
       <div className="card-body">
         {/* Cover Image */}
@@ -389,54 +395,95 @@ function CourseDetail({ course }) {
             </div>
           )}
 
-{activeTab === "comments" && (
+          {activeTab === "comments" && (
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
 
-                {course.ratings.length > 0 ? (
-                  course.ratings.map((rating, index) => (
-                    <div
-                      key={index}
-                      className="comment mb-3 p-3 rounded border"
-                      style={{ backgroundColor: "#f9f9f9" }}
-                    >
-                      <div className="d-flex justify-content-between align-items-center">
-                        <strong>{rating.name}</strong>
-                        <div className="text-warning">
-                          {[...Array(rating.ratings)].map((_, i) => (
-                            <FaStar key={i} />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="card-text mt-2 mb-0">{rating.comment}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-muted">No comments yet.</p>
-                )}
-
-                {/* Comment input box */}
-                <div className="mb-3">
-                  <label htmlFor="commentInput" className="form-label">
-                    Add a Comment
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="commentInput"
-                    placeholder="Write your comment here..."
-                    value={newComment}
-                    onChange={handleCommentChange}
-                  />
-                </div>
-
+              
+              {/* Comment Section */}
+              <div className="d-flex justify-content-end mb-3">
                 <button
-                  className="btn btn-primary"
-                  onClick={handleAddComment}
+                  className="btn btn-sm btn-primary"
+                  onClick={() => setShowAddCommentForm((prev) => !prev)}
                 >
-                  Submit Comment
+                  {showAddCommentForm ? "Cancel" : "New Comment"}
                 </button>
+              </div>
+
+              {/* Add Comment Form */}
+              {showAddCommentForm && (
+                <div className="mb-4">
+                  <div className="mb-3">
+                    <label htmlFor="commentInput" className="form-label">
+                      Add a Comment
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="commentInput"
+                      placeholder="Write your comment here..."
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Rating Input */}
+                  <div className="mb-3">
+                    <label htmlFor="ratingInput" className="form-label">Rating</label>
+                    <select
+                      className="form-control"
+                      id="ratingInput"
+                      value={newRating}
+                      onChange={(e) => setNewRating(Number(e.target.value))} // Convert the value to a number
+                    >
+                      <option value={0}>Select Rating</option>
+                      <option value={1}>1 Star</option>
+                      <option value={2}>2 Stars</option>
+                      <option value={3}>3 Stars</option>
+                      <option value={4}>4 Stars</option>
+                      <option value={5}>5 Stars</option>
+                    </select>
+                  </div>
+
+                  <div className="d-flex justify-content-end">
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleAddComment} // Ensure this function is defined as above
+                    >
+                      Submit Comment
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+              <div>
+                {course.ratings.length === 0 ? (
+                  <p>No comments available.</p>
+                ) : (
+                  <ul>
+                    {course.ratings.map((rating, index) => (
+                      <div
+                        key={index}
+                        className="comment mb-3 p-3 rounded border"
+                        style={{ backgroundColor: "#f9f9f9" }}
+                      >
+                        <div className="d-flex justify-content-between align-items-center">
+                          <strong>{rating.name}</strong>
+                          <div className="text-warning">
+                            {[...Array(rating.ratings)].map((_, i) => (
+                              <FaStar key={i} />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="card-text mt-2 mb-0">{rating.comment}</p>
+                      </div>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
               </div>
             </div>
           )}

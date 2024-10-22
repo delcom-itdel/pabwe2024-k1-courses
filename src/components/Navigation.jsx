@@ -7,7 +7,7 @@ function Navigation({ authLogin, onAuthSignOut }) {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-custom-purple"> 
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             Delta Courses
