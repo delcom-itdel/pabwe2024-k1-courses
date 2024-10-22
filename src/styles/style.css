@@ -1,5 +1,6 @@
 body {
   background-color: #f0f4f8; /* Tetap menggunakan soft light blue */
+  font-family: 'Roboto', sans-serif;
   margin-bottom: 50px;
 }
 
@@ -30,7 +31,7 @@ a {
   overflow: hidden !important;
   width: 100vw;
   height: 100vh;
-  background-color: #f0f4f8; /* Tetap menggunakan soft light blue */
+  background-color: #f0f4f8;
 }
 
 .loader {
@@ -42,7 +43,7 @@ a {
   width: 96px;
   aspect-ratio: 1;
   display: flex;
-  color: #3a3a3a; /* Tetap menggunakan dark grey */
+  color: #3a3a3a;
   border: 4px solid;
   box-sizing: border-box;
   border-radius: 50%;
@@ -64,10 +65,10 @@ a {
   }
 }
 
-/* Style untuk bagian dalam dari card body */
+/* Style untuk card body (selain login dan register) */
 .card-body {
   padding: 20px;
-  background-color: #ffffff; /* Tetap menggunakan white */
+  background-color: #ffffff;
   border-radius: 12px;
   transition: background-color 0.3s ease;
   animation: fadeInBody 0.8s ease-out;
@@ -78,7 +79,6 @@ a {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Flexbox untuk pengaturan detail profil */
 .d-flex {
   display: flex;
   align-items: center;
@@ -91,13 +91,12 @@ a {
   100% { opacity: 1; transform: translateX(0); }
 }
 
-/* Style untuk gambar profil */
 img.rounded-circle {
   width: 88px;
   height: 88px;
   border-radius: 50%;
   object-fit: cover;
-  border: none; /* Menghapus border pada lingkaran profil */
+  border: none;
   transition: transform 0.3s ease;
   animation: bounceIn 0.6s ease-out;
 }
@@ -109,44 +108,9 @@ img.rounded-circle {
 }
 
 img.rounded-circle:hover {
-  transform: rotate(5deg); /* Tetap slight tilt effect on hover */
-  animation: rotateEffect 0.3s ease-out;
+  transform: rotate(5deg);
 }
 
-@keyframes rotateEffect {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(5deg); }
-}
-
-/* Style untuk tombol ubah foto profil */
-.btn-outline-primary {
-  color: #76b39d; /* Mengganti coral color dengan teal */
-  border-color: #76b39d;
-  padding: 10px 16px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  border-radius: 20px; /* Tetap rounded button */
-  animation: fadeInBtn 0.8s ease-out;
-}
-
-@keyframes fadeInBtn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.btn-outline-primary:hover {
-  background-color: #76b39d; /* Mengganti coral dengan teal */
-  color: #ffffff;
-  border-color: #76b39d;
-  animation: btnHover 0.3s ease-out;
-}
-
-@keyframes btnHover {
-  0% { background-color: #76b39d; }
-  100% { background-color: #ffffff; color: #76b39d; }
-}
-
-/* Style untuk tabel detail pengguna */
 .table {
   width: 100%;
   margin-top: 20px;
@@ -164,11 +128,6 @@ img.rounded-circle:hover {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Border untuk tabel */
-.table-bordered {
-  border: none;
-}
-
 .table-bordered th,
 .table-bordered td {
   border: none;
@@ -182,9 +141,8 @@ img.rounded-circle:hover {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Style untuk header di dalam tabel */
 th {
-  background-color: #ffb347; /* Tetap soft orange */
+  background-color: #ffb347;
   color: #000000;
   font-weight: 600;
   animation: fadeInTableHeader 0.6s ease-out;
@@ -195,141 +153,21 @@ th {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Style untuk data di dalam tabel */
 td {
   background-color: #ffffff;
-  color: #4a4a4a; /* Tetap dark grey */
+  color: #4a4a4a;
 }
 
-/* Style untuk garis pemisah di dalam card */
 hr {
   margin: 20px 0;
   border: 0;
-  border-top: 1px solid #ffcc99; /* Tetap soft peach separator */
+  border-top: 1px solid #ffcc99;
   animation: hrSlideIn 0.8s ease-out;
 }
 
 @keyframes hrSlideIn {
   0% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Form Login dan Register */
-.login-register-container {
-  width: 350px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.login-register-container h2 {
-  text-align: center;
-  color: #3a6351; /* Tetap dark green for title */
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-}
-
-/* Mengubah warna biru pekat menjadi warna yang lebih lembut sesuai gambar */
-.tab-container .tab.active {
-  background-color: #5a8f7b; /* Warna teal yang lebih lembut */
-  color: white;
-}
-
-.tab-container .tab.inactive {
-  background-color: #90a3a7; /* Mengganti warna untuk lebih balance */
-}
-
-.login-register-container form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login-register-container input[type="text"],
-.login-register-container input[type="email"],
-.login-register-container input[type="password"] {
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 2px solid #3a6351; /* Tetap green border */
-  border-radius: 30px;
-  background-color: #f7f7f7;
-  font-size: 14px;
-}
-
-.login-register-container input[type="text"]::placeholder,
-.login-register-container input[type="email"]::placeholder,
-.login-register-container input[type="password"]::placeholder {
-  color: #7a7a7a; /* Tetap grey placeholder text */
-}
-
-.login-register-container button[type="submit"] {
-  padding: 12px;
-  background-color: #5a8f7b; /* Mengganti tombol biru menjadi teal */
-  color: white;
-  border: none;
-  border-radius: 30px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-register-container button[type="submit"]:hover {
-  background-color: #4e7a68; /* Warna teal yang lebih gelap saat hover */
-}
-
-.login-register-container .login-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-/* Style for tabs login and register */
-.login-tab,
-.register-tab {
-  background-color: #76b39d; /* Tetap teal for active tab */
-  color: white;
-  border-radius: 20px 20px 0 0;
-  text-align: center;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.login-tab.inactive,
-.register-tab.inactive {
-  background-color: #a3a3a3; /* Tetap light grey for inactive tab */
-}
-
-/* General adjustments */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  border: 2px solid #76b39d; /* Tetap teal border */
-  border-radius: 50px;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-button.submit {
-  width: 100%;
-  padding: 10px;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-  background-color: #76b39d; /* Tetap teal background */
-  color: #fff;
-  border: none;
-  margin-top: 20px;
-}
-
-button.submit:hover {
-  background-color: #5e8d75; /* Tetap darker teal */
-}
-
-input::placeholder {
-  color: #7a7a7a; /* Tetap grey placeholder */
 }
 
 .course-list {
@@ -374,4 +212,225 @@ input::placeholder {
 
 .course-buttons .btn {
   flex: 1;
+}
+
+/* CSS untuk login dan register */
+.login-page .login-grid,
+.register-page .login-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns layout */
+  gap: 20px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-page .login-left-section,
+.register-page .register-left-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.login-page .login-left-section h2,
+.register-page .register-left-section h2 {
+  font-size: 24px;
+  color: #6c63ff;
+  margin-bottom: 20px;
+}
+
+.login-page .login-left-section img,
+.register-page .register-left-section img {
+  max-width: 80%;
+  margin-bottom: 20px;
+}
+
+.login-page .btn,
+.register-page .btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  font-weight: bold;
+  margin: 10px 0;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+}
+
+.login-page .btn.primary,
+.register-page .btn.primary {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.login-page .btn.secondary,
+.register-page .btn.secondary {
+  background-color: transparent;
+  color: #6c63ff;
+  border: 2px solid #6c63ff;
+}
+
+.login-page .login-right-section,
+.register-page .register-right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-page .login-right-section h2,
+.register-page .register-right-section h2 {
+  font-size: 24px;
+  color: #6c63ff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-page input[type="text"],
+.login-page input[type="email"],
+.login-page input[type="password"],
+.register-page input[type="text"],
+.register-page input[type="email"],
+.register-page input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+  border: 2px solid #76b39d;
+  background-color: #f7f7f7;
+  font-size: 16px;
+  outline: none;
+}
+
+.login-page input::placeholder,
+.register-page input::placeholder {
+  color: #a3a3a3;
+}
+
+.login-page button[type="submit"],
+.register-page button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background-color: #6c63ff;
+  color: white;
+  border-radius: 30px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-page button[type="submit"]:hover,
+.register-page button[type="submit"]:hover {
+  background-color: #554bdb;
+}
+
+/* Spesifik untuk WelcomePage */
+/* Spesifik untuk WelcomePage */
+.welcome-page .welcome-left-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px; /* Kurangi padding agar kotak lebih kecil */
+  height: 100%; /* Isi seluruh tinggi container */
+}
+
+.welcome-page .welcome-container {
+  max-width: 300px; /* Perkecil lebar maksimal */
+  max-height: 80vh; /* Tinggi maksimal 80% dari tinggi layar */
+  height: auto; /* Biarkan konten menentukan tinggi */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding: 15px; /* Kurangi padding untuk memperkecil kotak */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.welcome-page .welcome-left-section h2 {
+  font-size: 20px; /* Perkecil ukuran font */
+  color: #6c63ff;
+  margin-bottom: 15px; /* Kurangi jarak bawah */
+}
+
+.welcome-page .welcome-left-section img {
+  max-width: 70%; /* Perkecil ukuran gambar */
+  margin-bottom: 15px; /* Kurangi margin bawah */
+}
+
+.welcome-page .btn {
+  width: 100%;
+  padding: 12px; /* Kurangi padding tombol */
+  border-radius: 30px;
+  font-weight: bold;
+  margin: 8px 0; /* Kurangi jarak antar tombol */
+  cursor: pointer;
+  border: none;
+  font-size: 14px; /* Perkecil ukuran font tombol */
+}
+
+.welcome-page .btn.primary {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.welcome-page .btn.secondary {
+  background-color: transparent;
+  color: #6c63ff;
+  border: 2px solid #6c63ff;
+}
+
+
+/* Spesifik untuk LoginPage */
+.login-page .login-right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-page .login-right-section h2 {
+  font-size: 24px;
+  color: #6c63ff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-page input[type="text"],
+.login-page input[type="email"],
+.login-page input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+  border: 2px solid #76b39d;
+  background-color: #f7f7f7;
+  font-size: 16px;
+  outline: none;
+}
+
+.login-page button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background-color: #6c63ff;
+  color: white;
+  border-radius: 30px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-page button[type="submit"]:hover {
+  background-color: #554bdb;
 }

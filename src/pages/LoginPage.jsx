@@ -9,11 +9,8 @@ function LoginPage() {
     dispatch(asyncSetAuthLogin({ email, password }));
   };
 
-  return (
-    <div className="container login-page pt-2">
-      <LoginInput onAuthLogin={onAuthLogin} />
-    </div>
-  );
+  
+  
 }
 
 export default LoginPage;

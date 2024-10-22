@@ -16,8 +16,17 @@ function RegisterPage() {
   };
 
   return (
-    <div className="container register-page pt-2">
-      <RegisterInput onAuthRegister={onAuthRegister} />
+    <div className="login-register-container register-page">
+      <div className="login-grid">
+        <div className="register-left-section">
+          <h2>Welcome to Courses Web</h2>
+          <img src="src\pages\home.jpg" alt="Welcome Illustration" />
+        </div>
+        <div className="register-right-section">
+          <h2>Register</h2>
+          <RegisterInput onAuthRegister={onAuthRegister} />
+        </div>
+      </div>
     </div>
   );
 }

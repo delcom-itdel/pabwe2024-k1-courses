@@ -1,0 +1,106 @@
+/* Kontainer utama */
+.login-page-baru-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8; /* Pastikan ini sesuai dengan warna latar belakang tanpa box */
+}
+
+/* Box login */
+.login-page-baru {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white; /* Ini adalah box utama form login */
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: none; /* Hilangkan shadow */
+  width: 100%;
+  max-width: 350px;
+  border: none; /* Hilangkan border */
+}
+
+/* Judul Login */
+.login-form-section h2 {
+  text-align: center;
+  color: #6c63ff;
+  font-size: 24px; /* Kurangi ukuran font */
+  margin-bottom: 15px;
+}
+
+/* Gambar diletakkan tepat di bawah judul */
+.login-image-section {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0; /* Kurangi jarak antara gambar dan form input */
+}
+
+.login-image-large {
+  width: 100%;
+  max-width: 150px; /* Kurangi ukuran gambar */
+  height: auto;
+}
+
+/* Form input */
+.login-form-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.login-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Kurangi jarak antar input */
+  width: 100%;
+}
+
+/* Input form */
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #f7f7f7;
+  border-radius: 30px;
+  padding: 10px; /* Kurangi padding input */
+  border: 2px solid #76b39d;
+}
+
+.input-group i {
+  margin-right: 10px;
+  color: #a3a3a3;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: none;
+  flex: 1;
+  font-size: 14px; /* Kurangi ukuran font input */
+}
+
+/* Tombol login */
+.btn.primary {
+  background-color: #6c63ff;
+  color: white;
+  padding: 10px; /* Kurangi padding tombol */
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn.primary:hover {
+  background-color: #554bdb;
+}
+
+/* Hapus background yang mungkin muncul di container luar */
+.w-300px {
+  background-color: transparent; /* Pastikan background luar transparan */
+  box-shadow: none; /* Hapus shadow jika ada */
+  border: none; /* Hilangkan border */
+}
