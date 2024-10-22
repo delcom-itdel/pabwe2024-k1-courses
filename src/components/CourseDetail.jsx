@@ -20,6 +20,11 @@ function CourseDetail({ course }) {
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("contents");
   const fileInputRef = useRef(null);
+  const [newComment, setNewComment] = useState(""); // State for new comment input
+  const [comments, setComments] = useState(course.comments || []); // State to manage comments
+  const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
+  const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
+  const [newContentYoutube, setNewContentYoutube] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -32,6 +37,7 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
+      setComments(course.comments || []);
     }
   }, [course]);
 
@@ -82,6 +88,48 @@ function CourseDetail({ course }) {
       dispatch(asyncDetailCourse(course.id));
     } catch (error) {
       console.error("Failed to save changes:", error.message);
+    }
+  };
+
+  const handleCommentChange = (event) => {
+    setNewComment(event.target.value);
+  };
+
+  const handleAddComment = async () => {
+    if (newComment.trim() === "") return;
+
+    try {
+      const updatedComments = await api.postAddComment({
+        id: course.id,
+        comment: newComment,
+      });
+
+      setComments(updatedComments); // Update comments state with the new list
+      setNewComment(""); // Clear the input field
+      dispatch(asyncDetailCourse(course.id)); // Refresh course data to get the updated comments
+    } catch (error) {
+      console.error("Failed to add comment:", error.message);
+    }
+  };
+
+  const handleAddContent = async () => {
+    if (newContentTitle.trim() === "" || newContentYoutube.trim() === "")
+      return;
+
+    try {
+      await dispatch(
+        asyncAddContent({
+          id: course.id,
+          title: newContentTitle,
+          youtube: newContentYoutube,
+        })
+      );
+      setNewContentTitle(""); // Clear the input fields after submission
+      setNewContentYoutube("");
+      setShowAddContentForm(false); // Hide the form after content is added
+      dispatch(asyncDetailCourse(course.id)); // Refresh the course details to show new content
+    } catch (error) {
+      console.error("Failed to add content:", error.message);
     }
   };
 
@@ -249,10 +297,75 @@ function CourseDetail({ course }) {
         {/* Tab Content */}
         <div className="tab-content mt-3">
           {activeTab === "contents" && (
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Contents</h5>
-                <p className="card-text">Placeholder...</p>
+            <div>
+              <div className="d-flex justify-content-end mb-3">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => setShowAddContentForm((prev) => !prev)}
+                >
+                  {showAddContentForm ? "Cancel" : "Add Content"}
+                </button>
+              </div>
+
+              {/* Add Content Form */}
+              {showAddContentForm && (
+                <div className="mb-4">
+                  <div className="mb-3">
+                    <label htmlFor="newContentTitle" className="form-label">
+                      Content Title
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="newContentTitle"
+                      value={newContentTitle}
+                      onChange={(e) => setNewContentTitle(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="newContentYoutube" className="form-label">
+                      YouTube Link
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="newContentYoutube"
+                      value={newContentYoutube}
+                      onChange={(e) => setNewContentYoutube(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="d-flex justify-content-end">
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleAddContent}
+                    >
+                      Submit Content
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                {course.contents.length === 0 ? (
+                  <p>No content available.</p>
+                ) : (
+                  <ul>
+                    {course.contents.map((content) => (
+                      <li key={content.id}>
+                        <h5>{content.title}</h5>
+                        <a
+                          href={content.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Watch on YouTube
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           )}
