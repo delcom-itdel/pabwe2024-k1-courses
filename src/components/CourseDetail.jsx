@@ -20,6 +20,8 @@ function CourseDetail({ course }) {
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("contents"); // State to manage active tab
   const fileInputRef = useRef(null);
+  const [newComment, setNewComment] = useState(""); // State for new comment input
+  const [comments, setComments] = useState(course.comments || []); // State to manage comments
 
   useEffect(() => {
     if (id) {
@@ -32,6 +34,7 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
+      setComments(course.comments || []); // Set comments from course data
     }
   }, [course]);
 
@@ -86,6 +89,28 @@ function CourseDetail({ course }) {
     }
   };
 
+  const handleCommentChange = (event) => {
+    setNewComment(event.target.value);
+  };
+
+  const handleAddComment = async () => {
+    if (newComment.trim() === "") return;
+
+    try {
+      // Assume an API call for adding a comment exists
+      const updatedComments = await api.postAddComment({
+        id: course.id,
+        comment: newComment,
+      });
+
+      setComments(updatedComments); // Update comments state with the new list
+      setNewComment(""); // Clear the input field
+      dispatch(asyncDetailCourse(course.id)); // Refresh course data to get the updated comments
+    } catch (error) {
+      console.error("Failed to add comment:", error.message);
+    }
+  };
+
   return (
     <div className="card mt-3">
       <div className="card-body">
@@ -124,7 +149,6 @@ function CourseDetail({ course }) {
         <div className="row align-items-center">
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center">
-              {/* Display the title and average rating */}
               <h5 className="mb-0">
                 {course.title}{" "}
                 {course.avg_ratings && (
@@ -278,6 +302,7 @@ function CourseDetail({ course }) {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
+
                 {course.ratings.length > 0 ? (
                   course.ratings.map((rating, index) => (
                     <div
@@ -299,11 +324,31 @@ function CourseDetail({ course }) {
                 ) : (
                   <p className="text-muted">No comments yet.</p>
                 )}
+
+                {/* Comment input box */}
+                <div className="mb-3">
+                  <label htmlFor="commentInput" className="form-label">
+                    Add a Comment
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="commentInput"
+                    placeholder="Write your comment here..."
+                    value={newComment}
+                    onChange={handleCommentChange}
+                  />
+                </div>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={handleAddComment}
+                >
+                  Submit Comment
+                </button>
               </div>
             </div>
           )}
-
-
         </div>
       </div>
     </div>
