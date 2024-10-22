@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { courseItemShape } from "./CourseItem";
 import { postedAt } from "../utils/tools";
-import { FaClock, FaPenToSquare, FaUpload, FaStar } from "react-icons/fa6"; // Added FaStar for the ratings
+import { FaClock, FaPenToSquare, FaUpload, FaStar } from "react-icons/fa6";
 import api from "../utils/api";
 import { useDispatch } from "react-redux";
 import { asyncDetailCourse } from "../states/courses/action";
@@ -18,8 +18,13 @@ function CourseDetail({ course }) {
   );
   const [previewCover, setPreviewCover] = useState(course?.cover || null);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState("contents"); // State to manage active tab
+  const [activeTab, setActiveTab] = useState("contents");
   const fileInputRef = useRef(null);
+  const [newComment, setNewComment] = useState(""); // State for new comment input
+  const [comments, setComments] = useState(course.comments || []); // State to manage comments
+  const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
+  const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
+  const [newContentYoutube, setNewContentYoutube] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -32,6 +37,7 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
+      setComments(course.comments || []);
     }
   }, [course]);
 
@@ -69,7 +75,6 @@ function CourseDetail({ course }) {
 
   const handleSaveChanges = async () => {
     if (editedTitle.trim() === "" || editedDescription.trim() === "") {
-      // Handle error without Swal
       return;
     }
 
@@ -80,11 +85,55 @@ function CourseDetail({ course }) {
         description: editedDescription,
       });
       setIsEditing(false);
-      dispatch(asyncDetailCourse(course.id)); // Refresh the course details
+      dispatch(asyncDetailCourse(course.id));
     } catch (error) {
-      // Handle error without Swal
+      console.error("Failed to save changes:", error.message);
     }
   };
+
+  const handleCommentChange = (event) => {
+    setNewComment(event.target.value);
+  };
+
+  const handleAddComment = async () => {
+    if (newComment.trim() === "") return;
+
+    try {
+      const updatedComments = await api.postAddComment({
+        id: course.id,
+        comment: newComment,
+      });
+
+      setComments(updatedComments); // Update comments state with the new list
+      setNewComment(""); // Clear the input field
+      dispatch(asyncDetailCourse(course.id)); // Refresh course data to get the updated comments
+    } catch (error) {
+      console.error("Failed to add comment:", error.message);
+    }
+  };
+
+  const handleAddContent = async () => {
+    if (newContentTitle.trim() === "" || newContentYoutube.trim() === "")
+      return;
+
+    try {
+      await dispatch(
+        asyncAddContent({
+          id: course.id,
+          title: newContentTitle,
+          youtube: newContentYoutube,
+        })
+      );
+      setNewContentTitle(""); // Clear the input fields after submission
+      setNewContentYoutube("");
+      setShowAddContentForm(false); // Hide the form after content is added
+      dispatch(asyncDetailCourse(course.id)); // Refresh the course details to show new content
+    } catch (error) {
+      console.error("Failed to add content:", error.message);
+    }
+  };
+
+  const enrolledStudentsCount = course.students ? course.students.length : 0;
 
   return (
     <div className="card mt-3">
@@ -124,7 +173,7 @@ function CourseDetail({ course }) {
         <div className="row align-items-center">
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center">
-              {/* Display the title and average rating */}
+              {/* Display the title, average rating, and enrolled students count */}
               <h5 className="mb-0">
                 {course.title}{" "}
                 {course.avg_ratings && (
@@ -132,6 +181,10 @@ function CourseDetail({ course }) {
                     <FaStar /> {course.avg_ratings}
                   </span>
                 )}
+                <span className="text-muted">
+                  {" | "}
+                  {enrolledStudentsCount} students enrolled
+                </span>
               </h5>
               <div>
                 <button
@@ -244,10 +297,75 @@ function CourseDetail({ course }) {
         {/* Tab Content */}
         <div className="tab-content mt-3">
           {activeTab === "contents" && (
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Contents</h5>
-                <p className="card-text">Placeholder...</p>
+            <div>
+              <div className="d-flex justify-content-end mb-3">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => setShowAddContentForm((prev) => !prev)}
+                >
+                  {showAddContentForm ? "Cancel" : "Add Content"}
+                </button>
+              </div>
+
+              {/* Add Content Form */}
+              {showAddContentForm && (
+                <div className="mb-4">
+                  <div className="mb-3">
+                    <label htmlFor="newContentTitle" className="form-label">
+                      Content Title
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="newContentTitle"
+                      value={newContentTitle}
+                      onChange={(e) => setNewContentTitle(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="newContentYoutube" className="form-label">
+                      YouTube Link
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="newContentYoutube"
+                      value={newContentYoutube}
+                      onChange={(e) => setNewContentYoutube(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="d-flex justify-content-end">
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleAddContent}
+                    >
+                      Submit Content
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                {course.contents.length === 0 ? (
+                  <p>No content available.</p>
+                ) : (
+                  <ul>
+                    {course.contents.map((content) => (
+                      <li key={content.id}>
+                        <h5>{content.title}</h5>
+                        <a
+                          href={content.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Watch on YouTube
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           )}
@@ -256,16 +374,69 @@ function CourseDetail({ course }) {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Students</h5>
-                <p className="card-text">List of enrolled students</p>
+                {course.studentDetails && course.studentDetails.length > 0 ? (
+                  <ul>
+                    {course.studentDetails.map((student) => (
+                      <li key={student.id}>
+                        {student.name} (ID: {student.id})
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No students enrolled yet.</p>
+                )}
               </div>
             </div>
           )}
 
-          {activeTab === "comments" && (
+{activeTab === "comments" && (
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
-                <p className="card-text">User comments go here.</p>
+
+                {course.ratings.length > 0 ? (
+                  course.ratings.map((rating, index) => (
+                    <div
+                      key={index}
+                      className="comment mb-3 p-3 rounded border"
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    >
+                      <div className="d-flex justify-content-between align-items-center">
+                        <strong>{rating.name}</strong>
+                        <div className="text-warning">
+                          {[...Array(rating.ratings)].map((_, i) => (
+                            <FaStar key={i} />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="card-text mt-2 mb-0">{rating.comment}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-muted">No comments yet.</p>
+                )}
+
+                {/* Comment input box */}
+                <div className="mb-3">
+                  <label htmlFor="commentInput" className="form-label">
+                    Add a Comment
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="commentInput"
+                    placeholder="Write your comment here..."
+                    value={newComment}
+                    onChange={handleCommentChange}
+                  />
+                </div>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={handleAddComment}
+                >
+                  Submit Comment
+                </button>
               </div>
             </div>
           )}
