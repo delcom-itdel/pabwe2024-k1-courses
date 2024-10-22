@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { courseItemShape } from "./CourseItem";
 import { postedAt } from "../utils/tools";
-import { FaClock, FaPenToSquare, FaUpload, FaStar } from "react-icons/fa6";
 import {
   FaClock,
   FaPenToSquare,
@@ -12,7 +11,6 @@ import {
 } from "react-icons/fa6";
 import api from "../utils/api";
 import { useDispatch } from "react-redux";
-import { asyncDetailCourse } from "../states/courses/action";
 import {
   asyncDetailCourse,
   asyncAddContent,
@@ -32,9 +30,12 @@ function CourseDetail({ course }) {
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("contents");
   const fileInputRef = useRef(null);
+<<<<<<< Updated upstream
   const [showAddCommentForm, setShowAddCommentForm] =  useState(false);
   const [newComment, setNewComment] = useState(""); // State for new comment input
   const [newRating, setNewRating] = useState(0); // State for new comment input
+=======
+>>>>>>> Stashed changes
 
   const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
   const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
@@ -101,17 +102,6 @@ function CourseDetail({ course }) {
       return;
     }
 
-    try {
-      await api.putUpdateCourse({
-        id: course.id,
-        title: editedTitle,
-        description: editedDescription,
-      });
-      setIsEditing(false);
-      dispatch(asyncDetailCourse(course.id));
-    } catch (error) {
-      console.error("Failed to save changes:", error.message);
-    }
     // onEditCourse(course.id, editedTitle, editedDescription);
     await api.putUpdateCourse({
       id: course.id,
@@ -344,40 +334,15 @@ function CourseDetail({ course }) {
         <div className="tab-content mt-3">
           {activeTab === "contents" && (
             <div>
-              <div className="d-flex justify-content-end mb-3">
               <div className="d-flex justify-content-between mb-3">
                 <button
+                  className="btn btn-outline-primary"
+                  onClick={() => setShowAddContentForm(true)}
                 >
+                  Add Content
                 </button>
               </div>
               {showAddContentForm && (
-                <div className="mb-4">
-                  <div className="mb-3">
-                    <label htmlFor="newContentTitle" className="form-label">
-                      Content Title
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="newContentTitle"
-                      value={newContentTitle}
-                      onChange={(e) => setNewContentTitle(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="mb-3">
-                    <label htmlFor="newContentYoutube" className="form-label">
-                      YouTube Link
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="newContentYoutube"
-                      value={newContentYoutube}
-                      onChange={(e) => setNewContentYoutube(e.target.value)}
-                    />
-                  </div>
-
                 <div className="mb-3">
                   <input
                     type="text"
@@ -404,31 +369,12 @@ function CourseDetail({ course }) {
                       className="btn btn-primary"
                       onClick={handleAddContent}
                     >
+                      Add
                     </button>
                   </div>
                 </div>
               )}
 
-              <div>
-                {course.contents.length === 0 ? (
-                  <p>No content available.</p>
-                ) : (
-                  <ul>
-                    {course.contents.map((content) => (
-                      <li key={content.id}>
-                        <h5>{content.title}</h5>
-                        <a
-                          href={content.youtube}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Watch on YouTube
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
               {course.contents.map((content) => (
                 <div key={content.id} className="card mb-3">
                   <div className="card-body">
