@@ -3,9 +3,21 @@ import PropTypes from "prop-types";
 import { courseItemShape } from "./CourseItem";
 import { postedAt } from "../utils/tools";
 import { FaClock, FaPenToSquare, FaUpload, FaStar } from "react-icons/fa6";
+import {
+  FaClock,
+  FaPenToSquare,
+  FaUpload,
+  FaStar,
+  FaTrash,
+} from "react-icons/fa6";
 import api from "../utils/api";
 import { useDispatch } from "react-redux";
 import { asyncDetailCourse } from "../states/courses/action";
+import {
+  asyncDetailCourse,
+  asyncAddContent,
+  asyncDeleteContent,
+} from "../states/courses/action";
 import { useParams } from "react-router-dom";
 
 function CourseDetail({ course }) {
@@ -27,6 +39,16 @@ function CourseDetail({ course }) {
   const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
   const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
   const [newContentYoutube, setNewContentYoutube] = useState("");
+
+  const [newComment, setNewComment] = useState(""); // State for new comment input
+  const [comments, setComments] = useState(course?.comments || []); // State to manage comments
+
+  const getYouTubeID = (url) => {
+    const regex =
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|watch)\S*[\?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const matches = url.match(regex);
+    return matches && matches[1] ? matches[1] : null;
+  };
 
   useEffect(() => {
     if (id) {
@@ -90,6 +112,14 @@ function CourseDetail({ course }) {
     } catch (error) {
       console.error("Failed to save changes:", error.message);
     }
+    // onEditCourse(course.id, editedTitle, editedDescription);
+    await api.putUpdateCourse({
+      id: course.id,
+      title: editedTitle,
+      description: editedDescription,
+    });
+    setIsEditing(false);
+    dispatch(asyncDetailCourse(course.id));
   };
 
 
@@ -122,19 +152,29 @@ function CourseDetail({ course }) {
       return;
 
     try {
-      await dispatch(
+      dispatch(
         asyncAddContent({
           id: course.id,
           title: newContentTitle,
           youtube: newContentYoutube,
         })
       );
+
       setNewContentTitle(""); // Clear the input fields after submission
       setNewContentYoutube("");
       setShowAddContentForm(false); // Hide the form after content is added
       dispatch(asyncDetailCourse(course.id)); // Refresh the course details to show new content
     } catch (error) {
       console.error("Failed to add content:", error.message);
+    }
+  };
+
+  const handleDeleteContent = async (contentId) => {
+    try {
+      dispatch(asyncDeleteContent(contentId)); // Call the delete action
+      dispatch(asyncDetailCourse(course.id)); // Refresh the course details
+    } catch (error) {
+      console.error("Failed to delete content:", error.message);
     }
   };
 
@@ -305,15 +345,11 @@ function CourseDetail({ course }) {
           {activeTab === "contents" && (
             <div>
               <div className="d-flex justify-content-end mb-3">
+              <div className="d-flex justify-content-between mb-3">
                 <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => setShowAddContentForm((prev) => !prev)}
                 >
-                  {showAddContentForm ? "Cancel" : "Add Content"}
                 </button>
               </div>
-
-              {/* Add Content Form */}
               {showAddContentForm && (
                 <div className="mb-4">
                   <div className="mb-3">
@@ -342,12 +378,32 @@ function CourseDetail({ course }) {
                     />
                   </div>
 
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="Content Title"
+                    value={newContentTitle}
+                    onChange={(e) => setNewContentTitle(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="YouTube URL"
+                    value={newContentYoutube}
+                    onChange={(e) => setNewContentYoutube(e.target.value)}
+                  />
                   <div className="d-flex justify-content-end">
+                    <button
+                      className="btn btn-secondary me-2"
+                      onClick={() => setShowAddContentForm(false)} // Cancel button action
+                    >
+                      Cancel
+                    </button>
                     <button
                       className="btn btn-primary"
                       onClick={handleAddContent}
                     >
-                      Submit Content
                     </button>
                   </div>
                 </div>
@@ -373,6 +429,31 @@ function CourseDetail({ course }) {
                   </ul>
                 )}
               </div>
+              {course.contents.map((content) => (
+                <div key={content.id} className="card mb-3">
+                  <div className="card-body">
+                    <h5 className="card-title">{content.title}</h5>
+                    {content.youtube && (
+                      <iframe
+                        title={content.title}
+                        src={`https://www.youtube.com/embed/${getYouTubeID(
+                          content.youtube
+                        )}`}
+                        width="100%"
+                        height="315"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    )}
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDeleteContent(content.id)}
+                    >
+                      <FaTrash /> Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
@@ -400,6 +481,7 @@ function CourseDetail({ course }) {
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
 
+<<<<<<< Updated upstream
               
               {/* Comment Section */}
               <div className="d-flex justify-content-end mb-3">
@@ -408,6 +490,47 @@ function CourseDetail({ course }) {
                   onClick={() => setShowAddCommentForm((prev) => !prev)}
                 >
                   {showAddCommentForm ? "Cancel" : "New Comment"}
+=======
+                {course.ratings.length > 0 ? (
+                  course.ratings.map((rating, index) => (
+                    <div
+                      key={index}
+                      className="comment mb-3 p-3 rounded border"
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    >
+                      <div className="d-flex justify-content-between align-items-center">
+                        <strong>{rating.name}</strong>
+                        <div className="text-warning">
+                          {[...Array(rating.ratings)].map((_, i) => (
+                            <FaStar key={i} />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="card-text mt-2 mb-0">{rating.comment}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-muted">No comments yet.</p>
+                )}
+
+                {/* Comment input box */}
+                <div className="mb-3">
+                  <label htmlFor="commentInput" className="form-label">
+                    Add a Comment
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="commentInput"
+                    placeholder="Write your comment here..."
+                    value={newComment}
+                    onChange={handleCommentChange}
+                  />
+                </div>
+
+                <button className="btn btn-primary" onClick={handleAddComment}>
+                  Submit Comment
+>>>>>>> Stashed changes
                 </button>
               </div>
 
@@ -495,6 +618,8 @@ function CourseDetail({ course }) {
 
 CourseDetail.propTypes = {
   course: PropTypes.shape(courseItemShape).isRequired,
+  onEditCourse: PropTypes.func.isRequired,
+  onAddContent: PropTypes.func.isRequired,
 };
 
 export default CourseDetail;

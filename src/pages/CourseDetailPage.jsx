@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { asyncDetailCourse, asyncUpdateCourse } from "../states/courses/action";
+import {
+  asyncAddContent,
+  asyncDetailCourse,
+  asyncUpdateCourse,
+} from "../states/courses/action";
 import CourseDetail from "../components/CourseDetail";
 
 function CourseDetailPage() {
@@ -27,11 +31,26 @@ function CourseDetailPage() {
     });
   };
 
+  const handleAddContent = (id, title, youtube) => {
+    dispatch(asyncAddContent(id, title, youtube));
+
+    Swal.fire({
+      icon: "success",
+      title: "Content baru berhasil ditambahkan!",
+      showConfirmButton: false,
+      timer: 1200,
+    });
+  };
+
   return (
     <section>
       <div className="container pt-1">
         {detailCourse != null ? (
-          <CourseDetail course={detailCourse} onEditCourse={handleEditCourse} />
+          <CourseDetail
+            course={detailCourse}
+            onEditCourse={handleEditCourse}
+            onAddContent={handleAddContent}
+          />
         ) : null}
       </div>
     </section>
