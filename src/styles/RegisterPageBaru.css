@@ -1,0 +1,103 @@
+/* Container utama untuk halaman register */
+.register-page-baru-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  margin: 0;
+  overflow: hidden; /* Hilangkan scroll */
+}
+
+/* Box untuk form register */
+.register-page-baru {
+  background-color: white;
+  padding: 15px; /* Kurangi padding */
+  border-radius: 15px; /* Kurangi border radius */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Kurangi shadow */
+  width: 100%;
+  max-width: 300px; /* Ukuran box */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+/* Styling judul register */
+.register-page-baru h2 {
+  text-align: center;
+  color: #6c63ff;
+  font-size: 26px; /* Ukuran font */
+  margin-bottom: 10px; /* Kurangi margin bawah */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #6c63ff, #554bdb);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Gambar diletakkan di bawah judul */
+.register-page-baru img {
+  width: 100%;
+  max-width: 120px; /* Ukuran gambar */
+  height: auto;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+/* Animasi hover pada gambar */
+.register-page-baru img:hover {
+  transform: scale(1.1);
+}
+
+/* Form input */
+.register-page-baru .input-group {
+  background-color: #f7f7f7;
+  border-radius: 50px; /* Rounded style seperti pada gambar */
+  padding: 15px;
+  border: 1px solid #76b39d;
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-page-baru .input-group input {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 14px;
+  width: 100%;
+  padding: 5px;
+  color: #6c63ff; /* Warna teks */
+}
+
+/* Button register */
+.register-page-baru .btn.primary {
+  background-color: #6c63ff; /* Sesuaikan warna tombol dengan header */
+  color: white;
+  padding: 10px;
+  border-radius: 50px; /* Rounded button */
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 10px;
+}
+
+.register-page-baru .btn.primary:hover {
+  background-color: #554bdb;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Center the button */
+.register-page-baru .btn {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}

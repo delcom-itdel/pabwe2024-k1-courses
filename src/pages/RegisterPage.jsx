@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import RegisterInput from "../components/RegisterInput";
 import { asyncSetIsAuthRegister } from "../states/isAuthRegister/action";
+import "../styles/RegisterPageBaru.css";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -16,16 +17,12 @@ function RegisterPage() {
   };
 
   return (
-    <div className="login-register-container register-page">
-      <div className="login-grid">
-        <div className="register-left-section">
-          <h2>Welcome to Courses Web</h2>
-          <img src="src\pages\home.jpg" alt="Welcome Illustration" />
-        </div>
-        <div className="register-right-section">
-          <h2>Register</h2>
-          <RegisterInput onAuthRegister={onAuthRegister} />
-        </div>
+    <div className="register-page-baru-container">  {/* New container */}
+      <div className="register-page-baru">
+        <h2>Register</h2>    
+<img src="src\pages\register.jpg" alt="Register Illustration" />
+
+        <RegisterInput onAuthRegister={onAuthRegister} />
       </div>
     </div>
   );

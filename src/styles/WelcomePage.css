@@ -1,0 +1,88 @@
+.welcome-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Pastikan ini mengambil seluruh tinggi layar */
+  margin: 0; /* Hilangkan margin default */
+  background-color: transparent; /* Set background transparan */
+}
+
+.welcome-container {
+  max-width: 350px;
+  width: 100%;
+  padding: 20px;
+  background-color: #ffffff; /* Hanya box ini yang memiliki latar putih */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan ke box */
+  border-radius: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Scale animation on hover */
+.welcome-container:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the heading */
+.welcome-left-section h2 {
+  font-size: 26px;
+  font-weight: bold;
+  color: #6c63ff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #6c63ff, #554bdb);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Welcome image with larger size and slight transition */
+.welcome-left-section img {
+  max-width: 150%; /* Ubah ukuran maksimum gambar menjadi lebih besar */
+  height: auto;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.welcome-left-section img:hover {
+  transform: scale(1.1); /* Perbesar sedikit saat hover */
+}
+
+
+/* Buttons for login and register with the same size */
+.welcome-page .btn {
+  width: 80%; /* Pastikan lebar kedua tombol sama */
+  padding: 14px; /* Menggunakan padding dari tombol Register */
+  font-size: 16px; /* Ukuran font yang sama */
+  border-radius: 30px;
+  margin: 10px 0;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+.welcome-page .btn.primary {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.welcome-page .btn.secondary {
+  background-color: transparent;
+  color: #6c63ff;
+  border: 2px solid #6c63ff;
+}
+
+.welcome-page .btn:hover {
+  transform: translateY(-3px); /* Lift the button on hover */
+  background-color: #554bdb;
+  color: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade-in animation for text */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

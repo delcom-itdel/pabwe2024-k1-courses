@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f4f8; /* Pastikan ini sesuai dengan warna latar belakang tanpa box */
+  background-color: #f0f4f8; /* Warna latar belakang */
 }
 
 /* Box login */
@@ -13,34 +13,44 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: white; /* Ini adalah box utama form login */
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: none; /* Hilangkan shadow */
+  background-color: white;
+  padding: 20px; /* Kurangi padding */
+  border-radius: 15px; /* Kurangi border radius */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Tambahkan shadow */
   width: 100%;
-  max-width: 350px;
-  border: none; /* Hilangkan border */
+  max-width: 300px; /* Kurangi lebar maksimal */
+  border: none;
 }
 
 /* Judul Login */
 .login-form-section h2 {
   text-align: center;
   color: #6c63ff;
-  font-size: 24px; /* Kurangi ukuran font */
-  margin-bottom: 15px;
+  font-size: 22px; /* Kurangi ukuran font */
+  margin-bottom: 5px; /* Kurangi jarak bawah */
+  margin-top: 5px; /* Kurangi jarak atas judul */
+  text-transform: uppercase; /* Jadikan huruf kapital semua */
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #6c63ff, #554bdb); /* Gradient warna */
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
 
+/* Gambar */
 /* Gambar diletakkan tepat di bawah judul */
 .login-image-section {
   display: flex;
   justify-content: center;
-  margin: 10px 0; /* Kurangi jarak antara gambar dan form input */
+  margin: 5px 0; /* Kurangi jarak antara gambar dan form input */
 }
 
 .login-image-large {
   width: 100%;
-  max-width: 150px; /* Kurangi ukuran gambar */
+  max-width: 350px; /* Kurangi ukuran gambar */
   height: auto;
+  margin-bottom: 5px; /* Kurangi jarak bawah gambar */
 }
 
 /* Form input */
@@ -55,7 +65,7 @@
 .login-inputs {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Kurangi jarak antar input */
+  gap: 8px; /* Kurangi jarak antar input */
   width: 100%;
 }
 
@@ -64,14 +74,9 @@
   display: flex;
   align-items: center;
   background-color: #f7f7f7;
-  border-radius: 30px;
-  padding: 10px; /* Kurangi padding input */
-  border: 2px solid #76b39d;
-}
-
-.input-group i {
-  margin-right: 10px;
-  color: #a3a3a3;
+  border-radius: 20px; /* Kurangi border radius */
+  padding: 8px; /* Kurangi padding */
+  border: 1px solid #76b39d;
 }
 
 .input-group input {
@@ -79,15 +84,15 @@
   outline: none;
   background: none;
   flex: 1;
-  font-size: 14px; /* Kurangi ukuran font input */
+  font-size: 12px; /* Kurangi ukuran font input */
 }
 
 /* Tombol login */
 .btn.primary {
   background-color: #6c63ff;
   color: white;
-  padding: 10px; /* Kurangi padding tombol */
-  border-radius: 30px;
+  padding: 8px; /* Kurangi padding tombol */
+  border-radius: 20px; /* Kurangi border radius */
   font-weight: bold;
   cursor: pointer;
   text-align: center;
@@ -103,4 +108,24 @@
   background-color: transparent; /* Pastikan background luar transparan */
   box-shadow: none; /* Hapus shadow jika ada */
   border: none; /* Hilangkan border */
+}
+
+/* Animasi dan style untuk judul Login */
+.login-form-section h2 {
+  text-align: center;
+  color: #6c63ff;
+  font-size: 22px; /* Kurangi ukuran font */
+  font-weight: bold;
+  margin-bottom: 10px; /* Kurangi margin */
+  letter-spacing: 2px; /* Tambahkan jarak antar huruf */
+  text-transform: uppercase; /* Jadikan huruf kapital semua */
+  background: linear-gradient(90deg, #6c63ff, #554bdb); /* Gradient warna */
+  -webkit-background-clip: text; /* Clip gradient ke teks */
+  color: transparent; /* Buat warna teks transparan untuk gradient */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Tambahkan shadow */
+  transition: transform 0.3s ease; /* Animasi untuk efek hover */
+}
+
+.login-form-section h2:hover {
+  transform: scale(1.05); /* Perbesar sedikit saat hover */
 }
