@@ -434,3 +434,439 @@ hr {
 .login-page button[type="submit"]:hover {
   background-color: #554bdb;
 }
+
+/* Main Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px; /* Ruang lebih pada sisi kiri dan kanan */
+}
+
+/* Image Slider Section */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.slider-image {
+  width: 100%;
+  height: 450px; /* Sesuaikan tinggi gambar */
+  object-fit: cover;
+  border-radius: 10px;
+  transition: none; /* Hilangkan efek smooth zoom */
+}
+
+/* Welcome Text Styling */
+.welcome-text {
+  text-align: justify; /* Menambahkan justify agar teks rapi */
+  margin: 40px 0;
+  font-size: 1.2rem;
+  color: #333;
+  padding: 0 20px;
+  max-width: 100%; /* Sejajarkan dengan slider */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.courses-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.courses-header {
+  display: flex;
+  justify-content: space-between; /* Pastikan ada spasi antara dua elemen */
+  align-items: center; /* Agar sejajar secara vertikal */
+  margin-bottom: 20px;
+  max-width: 1200px; /* Menyamakan dengan lebar list course */
+  margin-left: auto; /* Membuat posisi tengah */
+  margin-right: auto; /* Membuat posisi tengah */
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.see-all {
+  color: lightblue;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold; /* Membuat tulisan bold */
+  text-decoration: none; /* Hilangkan underline */
+}
+
+
+/* Course List Section */
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Jarak antar kursus */
+  justify-content: center;
+  margin-bottom: 50px; /* Ruang lebih di bawah */
+}
+
+.course-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.course-card {
+  width: 250px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding-bottom: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease; /* Animasi lembut */
+  position: relative;
+  cursor: pointer;
+}
+
+.course-card:hover {
+  transform: scale(1.03); /* Efek zoom lembut */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.course-cover img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.course-body {
+  padding: 15px;
+}
+
+.course-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.course-timestamp {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.course-description {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  line-height: 1.4;
+  text-align: left;
+  
+  /* Membatasi deskripsi menjadi maksimal 3 baris */
+  display: -webkit-box; /* Flexbox untuk elemen */
+  -webkit-line-clamp: 3; /* Membatasi hanya 3 baris */
+  -webkit-box-orient: vertical;
+  
+  overflow: hidden; /* Sembunyikan bagian teks yang melebihi batas */
+  text-overflow: ellipsis; /* Tambahkan ellipsis jika teks terlalu panjang */
+}
+
+/* Tombol Hapus Kembali ke Pojok Kanan Atas */
+.delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.course-card:hover .delete-button {
+  opacity: 1; /* Tampilkan tombol hapus saat card di-hover */
+}
+
+.delete-button:hover {
+  background-color: #ff4d4f;
+}
+
+/* FAQ Section Styles */
+.faq-section {
+  display: flex;
+  justify-content: space-between;
+  background-color: #d0e7f9; /* Soft blue background */
+  padding: 40px 20px; /* Ruang lebih */
+  margin: 50px 0;
+  border-radius: 10px;
+}
+
+.faq-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.left-image-fixed {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.single-image {
+  width: 300px;
+  height: 300px;
+  background-color: #add8e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.right-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+/* Dropdown Header */
+.dropdown-header {
+  background-color: #808080; /* Warna tetap abu-abu */
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-header:focus {
+  outline: none; /* Hilangkan outline biru saat klik */
+}
+
+/* Hilangkan perubahan warna saat hover */
+.dropdown-header:hover {
+  background-color: #808080; /* Tidak berubah warna */
+}
+
+/* Dropdown Body */
+.dropdown-body {
+  padding: 15px;
+  background-color: #666666;
+  color: white;
+  margin-top: -5px;
+  border-radius: 5px;
+  display: block;
+}
+
+/* Nonaktifkan perubahan warna saat hover dropdown-body */
+.dropdown-body:hover {
+  background-color: #666666; /* Tetap sama */
+}
+
+/* Why Us Section */
+.why-us-section {
+  text-align: center;
+  margin: 80px 0;
+  opacity: 0; /* Animasi awal */
+  transform: translateY(50px); /* Mulai dari bawah */
+  transition: all 0.8s ease; /* Animasi masuk */
+}
+
+.why-us-section.scrolled {
+  opacity: 1; /* Ketika discroll, elemen muncul */
+  transform: translateY(0);
+}
+
+.why-us-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.why-us-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  margin: 0 30px;
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.why-us-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.why-us-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.why-us-card h3 {
+  margin-top: 10px;
+  font-size: 1.5rem;
+  color: black;
+}
+
+.why-us-card p {
+  color: black;
+  margin-top: 5px;
+  font-size: 1rem;
+}
+
+/* Animasi Masuk dan Keluar untuk Sesi-sesi */
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(50px); /* Zoom in sedikit */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0); /* Kembali ke normal */
+  }
+}
+
+.why-us-section,
+.instructor-section,
+.team-section,
+.faq-section {
+  opacity: 0;
+  transform: scale(0.9) translateY(50px) rotate(-2deg); /* Posisi awal */
+  transition: all 0.6s ease; /* Kecepatan transisi diubah agar lebih dinamis */
+}
+
+.scrolled {
+  animation: fadeInZoom 0.8s forwards ease-in-out; /* Animasi masuk */
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #808080;
+  padding: 40px 20px;
+  color: #fff;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-left h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.footer-middle,
+.footer-right,
+.footer-address {
+  flex: 1;
+}
+
+.footer-middle ul,
+.footer-right ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-middle ul li,
+.footer-right ul li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.footer-middle img,
+.footer-right img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.footer-address p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.footer-address h4,
+.footer-middle h4,
+.footer-right h4 {
+  margin-bottom: 10px;
+}
+/* Instructor and Team Section */
+.instructor-section,
+.team-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.instructor-section h2,
+.team-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.instructor-section p,
+.team-section p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Buat 3 gambar dalam satu baris */
+  gap: 20px; /* Jarak antar gambar */
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.profile-card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: scale(1.05); /* Sedikit zoom saat hover */
+}
+
+.profile-image {
+  width: 200px; /* Perkecil ukuran gambar */
+  height: 200px; /* Sesuaikan tinggi agar gambar bulat */
+  border-radius: 50%; /* Membuat gambar menjadi bulat */
+  object-fit: cover; /* Agar gambar tetap rapi */
+  background-color: #e0e0e0;
+  margin: 0 auto 15px auto; /* Ruang di atas dan bawah gambar */
+}
+
+.profile-card h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.profile-card p {
+  font-size: 14px;
+  color: #666;
+}
