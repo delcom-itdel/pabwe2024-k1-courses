@@ -266,9 +266,18 @@ function CourseDetail({ course }) {
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
                 <p className="card-text">User comments go here.</p>
+                {course.ratings.map((rating, index) => (
+                  <div key={index}>
+                    <p className="card-text">
+                      <strong>{rating.name}:</strong> {rating.comment}
+                    </p>
+                    <p> <FaStar /> {rating.ratings}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
