@@ -141,6 +141,7 @@ function CourseDetail({ course }) {
   const enrolledStudentsCount = course.students ? course.students.length : 0;
 
   return (
+    
     <div className="card mt-3">
       <div className="card-body">
         {/* Cover Image */}
