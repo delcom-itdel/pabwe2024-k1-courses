@@ -389,11 +389,54 @@ function CourseDetail({ course }) {
             </div>
           )}
 
-          {activeTab === "comments" && (
+{activeTab === "comments" && (
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
-                <p className="card-text">User comments go here.</p>
+
+                {course.ratings.length > 0 ? (
+                  course.ratings.map((rating, index) => (
+                    <div
+                      key={index}
+                      className="comment mb-3 p-3 rounded border"
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    >
+                      <div className="d-flex justify-content-between align-items-center">
+                        <strong>{rating.name}</strong>
+                        <div className="text-warning">
+                          {[...Array(rating.ratings)].map((_, i) => (
+                            <FaStar key={i} />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="card-text mt-2 mb-0">{rating.comment}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-muted">No comments yet.</p>
+                )}
+
+                {/* Comment input box */}
+                <div className="mb-3">
+                  <label htmlFor="commentInput" className="form-label">
+                    Add a Comment
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="commentInput"
+                    placeholder="Write your comment here..."
+                    value={newComment}
+                    onChange={handleCommentChange}
+                  />
+                </div>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={handleAddComment}
+                >
+                  Submit Comment
+                </button>
               </div>
             </div>
           )}
