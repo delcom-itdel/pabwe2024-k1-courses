@@ -9,13 +9,13 @@ import {
 
 // Image array for the top section (replace with your actual image paths)
 const sliderImages = [
-  "/pic1.png", // Add correct image paths here
-  "/pic2.png",
-  "/pic3.png",
+  "/assets/vendor/pic1.png", // Add correct image paths here
+  "/assets/vendor/pic2.png",
+  "/assets/vendor/pic3.png",
 ];
 
 // Single image for the FAQ section
-const singleImage = "/pic1.png"; // Add the correct image path
+const singleImage = "/assets/vendor/pic1.png"; // Add the correct image path
 
 // Custom icons for dropdown (replace these paths with your actual image paths)
 const dropdownOpenIcon = "/path-to-open-icon.png"; // Icon for open dropdown
@@ -133,21 +133,21 @@ function HomePage() {
           <div className="why-us-grid">
             <div className="why-us-card">
               <div className="why-us-image">
-                <img src="/public/ardell.jpeg" alt="Gambar" />
+                <img src="/assets/vendor/ardell.jpeg" alt="Gambar" />
               </div>
               <h3>Judul</h3>
               <p>deskripsi deskripsi deskripsi</p>
             </div>
             <div className="why-us-card">
               <div className="why-us-image">
-                <img src="/public/ardell.jpeg" alt="Gambar" />
+                <img src="/assets/vendor/ardell.jpeg" alt="Gambar" />
               </div>
               <h3>Judul</h3>
               <p>deskripsi deskripsi deskripsi</p>
             </div>
             <div className="why-us-card">
               <div className="why-us-image">
-                <img src="/public/ardell.jpeg" alt="Gambar" />
+                <img src="/assets/vendor/ardell.jpeg" alt="Gambar" />
               </div>
               <h3>Judul</h3>
               <p>deskripsi deskripsi deskripsi</p>
@@ -161,17 +161,17 @@ function HomePage() {
           <p>Kami menyediakan instruktur-instruktur yang berpengalaman di bidangnya</p>
           <div className="profile-grid">
             <div className="profile-card">
-              <img src="/public/ardell.jpeg" alt="Instructor" className="profile-image" />
+              <img src="/assets/vendor/profImg1.png" alt="Instructor" className="profile-image" />
               <h3>Nama Instructor</h3>
               <p>Deskripsi instruktur</p>
             </div>
             <div className="profile-card">
-              <img src="/public/ardell.jpeg" alt="Instructor" className="profile-image" />
+              <img src="/assets/vendor/profImg2.png" alt="Instructor" className="profile-image" />
               <h3>Nama Instructor</h3>
               <p>Deskripsi instruktur</p>
             </div>
             <div className="profile-card">
-              <img src="/public/ardell.jpeg" alt="Instructor" className="profile-image" />
+              <img src="/assets/vendor/profImg3.png" alt="Instructor" className="profile-image" />
               <h3>Nama Instructor</h3>
               <p>Deskripsi instruktur</p>
             </div>
@@ -238,12 +238,12 @@ function HomePage() {
           <p>Tim kami menyediakan platform bagi orang-orang yang ingin belajar meningkatkan pengetahuan mereka</p>
           <div className="profile-grid">
             <div className="profile-card">
-              <img src="/public/ardell.jpeg" alt="Team Member" className="profile-image" />
+              <img src="/assets/vendor/ardell.jpeg" alt="Team Member" className="profile-image" />
               <h3>Nama Team Member</h3>
               <p>Deskripsi team member</p>
             </div>
             <div className="profile-card">
-              <img src="/public/ardell.jpeg" alt="Team Member" className="profile-image" />
+              <img src="/assets/vendor/ardell.jpeg" alt="Team Member" className="profile-image" />
               <h3>Nama Team Member</h3>
               <p>Deskripsi team member</p>
             </div>
