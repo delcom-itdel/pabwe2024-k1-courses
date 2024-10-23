@@ -680,8 +680,8 @@ strong:hover {
 }
 
 .single-image {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   background-color: #b5a2ff;
   display: flex;
   justify-content: center;
