@@ -520,7 +520,6 @@ function CourseDetail({ course }) {
                             Cancel
                           </button>
                         </div>
-                        ++ ++++++++++
                       </div>
                     ) : (
                       <div>
