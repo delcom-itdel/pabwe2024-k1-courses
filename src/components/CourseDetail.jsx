@@ -15,17 +15,18 @@ import {
   asyncDetailCourse,
   asyncAddContent,
   asyncDeleteContent,
-  asyncUpdateContent,
 } from "../states/courses/action";
 import { useParams } from "react-router-dom";
+const { getAllUsers, postAddStudent, getMe } = api;
 
 function CourseDetail({ course }) {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(course?.title || "");
-  const [editedDescription, setEditedDescription] = useState(course?.description || "");
-
+  const [editedDescription, setEditedDescription] = useState(
+    course?.description || ""
+  );
   const [previewCover, setPreviewCover] = useState(course?.cover || null);
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("contents");
@@ -34,19 +35,12 @@ function CourseDetail({ course }) {
   const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
   const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
   const [newContentYoutube, setNewContentYoutube] = useState("");
- 
- 
-  const [editingContentId, setEditingContentId] = useState(null);
-  const [editedContentTitle, setEditedContentTitle] = useState(""); // Edit form state
-  const [editedContentYoutube, setEditedContentYoutube] = useState("");
-
-  
   const [enrolledStudents, setEnrolledStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-  
   const [newComment, setNewComment] = useState(""); // State for new comment input
   const [comments, setComments] = useState(course?.comments || []); // State to manage comments
-  const { getAllUsers } = api;
+  const [studentIdToAdd, setStudentIdToAdd] = useState("");
+  const [currentUserID, setCurrentUserID] = useState(null);
 
   const getYouTubeID = (url) => {
     const regex =
@@ -66,7 +60,7 @@ function CourseDetail({ course }) {
     const fetchStudents = async () => {
       try {
         const allUsers = await getAllUsers(); // Use the imported async function
-        console.log("sucess");
+        console.log("success");
         // Assume `course.students` contains the list of enrolled student IDs
         const matchedStudents = allUsers.filter((user) =>
           course.students.includes(user.id)
@@ -90,6 +84,28 @@ function CourseDetail({ course }) {
       setComments(course.comments || []);
     }
   }, [course]);
+
+  const handleAddStudent = async () => {
+    try {
+      // Make sure a student ID is entered before proceeding
+      if (!studentIdToAdd.trim()) {
+        alert("Please enter a student ID.");
+        return;
+      }
+
+      // Use the asyncAddStudent action and postAddStudent function
+      await postAddStudent({ courseId: course.id, studentId: studentIdToAdd });
+      dispatch(asyncAddStudent({ id: course.id, studentId: studentIdToAdd }));
+
+      // Clear the input field after adding
+      setStudentIdToAdd("");
+
+      // Fetch the updated course details
+      dispatch(asyncDetailCourse(course.id));
+    } catch (error) {
+      console.error("Failed to add student:", error.message);
+    }
+  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -181,32 +197,6 @@ function CourseDetail({ course }) {
     }
   };
 
-  const handleEditContent = (content) => {
-    setEditingContentId(content.id);
-    setEditedContentTitle(content.title);
-    setEditedContentYoutube(content.youtube);
-  };
-
-  const handleSaveContentEdit = async () => {
-    if (editedContentTitle.trim() === "" || editedContentYoutube.trim() === "")
-      return;
-
-    try {
-      dispatch(
-        asyncUpdateContent({
-          id: editingContentId,
-          title: editedContentTitle,
-          youtube: editedContentYoutube,
-        })
-      );
-      setEditingContentId(null); // Exit edit mode after saving
-      dispatch(asyncDetailCourse(course.id)); // Refresh the course details
-    } catch (error) {
-      console.log("kadkdskds")
-      console.error("Failed to update content:", error.message);
-    }
-  };
-  
   const handleDeleteContent = async (contentId) => {
     try {
       dispatch(asyncDeleteContent(contentId)); // Call the delete action
@@ -269,6 +259,12 @@ function CourseDetail({ course }) {
                   {enrolledStudentsCount} students enrolled
                 </span>
               </h5>
+              <button
+                className="btn btn-outline-primary mt-2"
+                onClick={handleAddStudent}
+              >
+                Add Student
+              </button>
               <div>
                 <button
                   className="btn btn-outline-primary me-2"
@@ -383,42 +379,28 @@ function CourseDetail({ course }) {
             <div>
               <div className="d-flex justify-content-between mb-3">
                 <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => setShowAddContentForm((prev) => !prev)}
+                  className="btn btn-outline-primary"
+                  onClick={() => setShowAddContentForm(true)}
                 >
-                  {showAddContentForm ? "Cancel" : "Add Content"}
+                  Add Content
                 </button>
               </div>
-
-              {/* Add Content Form */}
               {showAddContentForm && (
-                <div className="mb-4">
-                  <div className="mb-3">
-                    <label htmlFor="newContentTitle" className="form-label">
-                      Content Title
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="newContentTitle"
-                      value={newContentTitle}
-                      onChange={(e) => setNewContentTitle(e.target.value)} // Corrected to setNewContentTitle
-                    />
-                  </div>
-
-                  <div className="mb-3">
-                    <label htmlFor="newContentYoutube" className="form-label">
-                      YouTube Link
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="newContentYoutube"
-                      value={newContentYoutube}
-                      onChange={(e) => setNewContentYoutube(e.target.value)}
-                    />
-                  </div>
-
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="Content Title"
+                    value={newContentTitle}
+                    onChange={(e) => setNewContentTitle(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="YouTube URL"
+                    value={newContentYoutube}
+                    onChange={(e) => setNewContentYoutube(e.target.value)}
+                  />
                   <div className="d-flex justify-content-end">
                     <button
                       className="btn btn-secondary me-2"
@@ -430,7 +412,7 @@ function CourseDetail({ course }) {
                       className="btn btn-primary"
                       onClick={handleAddContent}
                     >
-                      Submit Content
+                      Add
                     </button>
                   </div>
                 </div>
@@ -439,70 +421,25 @@ function CourseDetail({ course }) {
               {course.contents.map((content) => (
                 <div key={content.id} className="card mb-3">
                   <div className="card-body">
-                    {editingContentId === content.id ? (
-                      <div>
-                        <input
-                          type="text"
-                          className="form-control mb-2"
-                          value={editedContentTitle}
-                          onChange={(e) =>
-                            setEditedContentTitle(e.target.value)
-                          }
-                        />
-                        <input
-                          type="text"
-                          className="form-control mb-2"
-                          value={editedContentYoutube}
-                          onChange={(e) =>
-                            setEditedContentYoutube(e.target.value)
-                          }
-                        />
-                        <div className="d-flex justify-content-end">
-                          <button
-                            className="btn btn-primary me-2"
-                            onClick={handleSaveContentEdit}
-                          >
-                            Save
-                          </button>
-                          <button
-                            className="btn btn-secondary"
-                            onClick={() => setEditingContentId(null)} // Reset edit mode
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div>
-                        <h5 className="card-title">{content.title}</h5>
-                        {content.youtube && (
-                          <iframe
-                            title={content.title}
-                            src={`https://www.youtube.com/embed/${getYouTubeID(
-                              content.youtube
-                            )}`}
-                            width="100%"
-                            height="315"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          ></iframe>
-                        )}
-                        <div className="d-flex justify-content-end">
-                          <button
-                            className="btn btn-sm btn-warning me-2"
-                            onClick={() => handleEditContent(content)}
-                          >
-                            <FaPenToSquare /> Edit
-                          </button>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={() => handleDeleteContent(content.id)}
-                          >
-                            <FaTrash /> Delete
-                          </button>
-                        </div>
-                      </div>
+                    <h5 className="card-title">{content.title}</h5>
+                    {content.youtube && (
+                      <iframe
+                        title={content.title}
+                        src={`https://www.youtube.com/embed/${getYouTubeID(
+                          content.youtube
+                        )}`}
+                        width="100%"
+                        height="315"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
                     )}
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDeleteContent(content.id)}
+                    >
+                      <FaTrash /> Delete
+                    </button>
                   </div>
                 </div>
               ))}
