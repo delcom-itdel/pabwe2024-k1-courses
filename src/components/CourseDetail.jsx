@@ -2,22 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { courseItemShape } from "./CourseItem";
 import { postedAt } from "../utils/tools";
-import {
-  FaClock,
-  FaPenToSquare,
-  FaUpload,
-  FaStar,
-  FaTrash,
-} from "react-icons/fa6";
+import { FaClock, FaPenToSquare, FaUpload, FaStar } from "react-icons/fa6";
 import api from "../utils/api";
 import { useDispatch } from "react-redux";
-import {
-  asyncDetailCourse,
-  asyncAddContent,
-  asyncDeleteContent,
-} from "../states/courses/action";
+import { asyncDetailCourse } from "../states/courses/action";
 import { useParams } from "react-router-dom";
-const { getAllUsers, postAddStudent, getMe } = api;
+const { getAllUsers } = api;
 
 function CourseDetail({ course }) {
   const { id } = useParams();
@@ -31,23 +21,17 @@ function CourseDetail({ course }) {
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("contents");
   const fileInputRef = useRef(null);
+  const [showAddCommentForm, setShowAddCommentForm] =  useState(false);
+  
+  const [newComment, setNewComment] = useState(""); // State for new comment input
+  const [newRating, setNewRating] = useState(0); // State for new comment input
+  
+  const [enrolledStudents, setEnrolledStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
   const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
   const [newContentYoutube, setNewContentYoutube] = useState("");
-  const [enrolledStudents, setEnrolledStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [newComment, setNewComment] = useState(""); // State for new comment input
-  const [comments, setComments] = useState(course?.comments || []); // State to manage comments
-  const [studentIdToAdd, setStudentIdToAdd] = useState("");
-  const [currentUserID, setCurrentUserID] = useState(null);
-
-  const getYouTubeID = (url) => {
-    const regex =
-      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|watch)\S*[\?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-    const matches = url.match(regex);
-    return matches && matches[1] ? matches[1] : null;
-  };
 
   useEffect(() => {
     if (id) {
@@ -55,14 +39,15 @@ function CourseDetail({ course }) {
     }
   }, [dispatch, id]);
 
+
   useEffect(() => {
     // Function to fetch and filter students
     const fetchStudents = async () => {
       try {
         const allUsers = await getAllUsers(); // Use the imported async function
-        console.log("success");
+        console.log("sucess");
         // Assume `course.students` contains the list of enrolled student IDs
-        const matchedStudents = allUsers.filter((user) =>
+        const matchedStudents = allUsers.filter(user =>
           course.students.includes(user.id)
         );
         setEnrolledStudents(matchedStudents);
@@ -81,31 +66,8 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
-      setComments(course.comments || []);
     }
   }, [course]);
-
-  const handleAddStudent = async () => {
-    try {
-      // Make sure a student ID is entered before proceeding
-      if (!studentIdToAdd.trim()) {
-        alert("Please enter a student ID.");
-        return;
-      }
-
-      // Use the asyncAddStudent action and postAddStudent function
-      await postAddStudent({ courseId: course.id, studentId: studentIdToAdd });
-      dispatch(asyncAddStudent({ id: course.id, studentId: studentIdToAdd }));
-
-      // Clear the input field after adding
-      setStudentIdToAdd("");
-
-      // Fetch the updated course details
-      dispatch(asyncDetailCourse(course.id));
-    } catch (error) {
-      console.error("Failed to add student:", error.message);
-    }
-  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -144,50 +106,56 @@ function CourseDetail({ course }) {
       return;
     }
 
-    // onEditCourse(course.id, editedTitle, editedDescription);
-    await api.putUpdateCourse({
-      id: course.id,
-      title: editedTitle,
-      description: editedDescription,
-    });
-    setIsEditing(false);
-    dispatch(asyncDetailCourse(course.id));
+    try {
+      await api.putUpdateCourse({
+        id: course.id,
+        title: editedTitle,
+        description: editedDescription,
+      });
+      setIsEditing(false);
+      dispatch(asyncDetailCourse(course.id));
+    } catch (error) {
+      console.error("Failed to save changes:", error.message);
+    }
   };
 
-  const handleCommentChange = (event) => {
-    setNewComment(event.target.value);
-  };
 
   const handleAddComment = async () => {
-    if (newComment.trim() === "") return;
-
+    if (newComment.trim() === "" || rating === 0) return; // Ensure both comment and rating are provided
+  
     try {
-      const updatedComments = await api.postAddComment({
-        id: course.id,
-        comment: newComment,
-      });
-
-      setComments(updatedComments); // Update comments state with the new list
-      setNewComment(""); // Clear the input field
+      await dispatch(
+        asyncChangeStudentRatings({
+          id: course.id,
+          ratings: newRating, // Assuming 'rating' holds the user's rating value
+          comment: newComment,
+        })
+      );
+  
+      setNewComment(""); // Clear the input field after submission
+      setNewRating(0); // Reset the rating after submission (assuming you have a state for rating)
+      setShowAddCommentForm(false); // Hide the form after adding the comment
       dispatch(asyncDetailCourse(course.id)); // Refresh course data to get the updated comments
     } catch (error) {
       console.error("Failed to add comment:", error.message);
     }
   };
+  
+  
+  
 
   const handleAddContent = async () => {
     if (newContentTitle.trim() === "" || newContentYoutube.trim() === "")
       return;
 
     try {
-      dispatch(
+      await dispatch(
         asyncAddContent({
           id: course.id,
           title: newContentTitle,
           youtube: newContentYoutube,
         })
       );
-
       setNewContentTitle(""); // Clear the input fields after submission
       setNewContentYoutube("");
       setShowAddContentForm(false); // Hide the form after content is added
@@ -197,18 +165,10 @@ function CourseDetail({ course }) {
     }
   };
 
-  const handleDeleteContent = async (contentId) => {
-    try {
-      dispatch(asyncDeleteContent(contentId)); // Call the delete action
-      dispatch(asyncDetailCourse(course.id)); // Refresh the course details
-    } catch (error) {
-      console.error("Failed to delete content:", error.message);
-    }
-  };
-
   const enrolledStudentsCount = course.students ? course.students.length : 0;
 
   return (
+    
     <div className="card mt-3">
       <div className="card-body">
         {/* Cover Image */}
@@ -259,12 +219,6 @@ function CourseDetail({ course }) {
                   {enrolledStudentsCount} students enrolled
                 </span>
               </h5>
-              <button
-                className="btn btn-outline-primary mt-2"
-                onClick={handleAddStudent}
-              >
-                Add Student
-              </button>
               <div>
                 <button
                   className="btn btn-outline-primary me-2"
@@ -377,104 +331,173 @@ function CourseDetail({ course }) {
         <div className="tab-content mt-3">
           {activeTab === "contents" && (
             <div>
-              <div className="d-flex justify-content-between mb-3">
+              <div className="d-flex justify-content-end mb-3">
                 <button
-                  className="btn btn-outline-primary"
-                  onClick={() => setShowAddContentForm(true)}
+                  className="btn btn-sm btn-primary"
+                  onClick={() => setShowAddContentForm((prev) => !prev)}
                 >
-                  Add Content
+                  {showAddContentForm ? "Cancel" : "Add Content"}
                 </button>
               </div>
+
+              {/* Add Content Form */}
               {showAddContentForm && (
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Content Title"
-                    value={newContentTitle}
-                    onChange={(e) => setNewContentTitle(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="YouTube URL"
-                    value={newContentYoutube}
-                    onChange={(e) => setNewContentYoutube(e.target.value)}
-                  />
+                <div className="mb-4">
+                  <div className="mb-3">
+                    <label htmlFor="newContentTitle" className="form-label">
+                      Content Title
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="newContentTitle"
+                      value={newContentTitle}
+                      onChange={(e) => setNewContentTitle(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="newContentYoutube" className="form-label">
+                      YouTube Link
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="newContentYoutube"
+                      value={newContentYoutube}
+                      onChange={(e) => setNewContentYoutube(e.target.value)}
+                    />
+                  </div>
+
                   <div className="d-flex justify-content-end">
-                    <button
-                      className="btn btn-secondary me-2"
-                      onClick={() => setShowAddContentForm(false)} // Cancel button action
-                    >
-                      Cancel
-                    </button>
                     <button
                       className="btn btn-primary"
                       onClick={handleAddContent}
                     >
-                      Add
+                      Submit Content
                     </button>
                   </div>
                 </div>
               )}
 
-              {course.contents.map((content) => (
-                <div key={content.id} className="card mb-3">
-                  <div className="card-body">
-                    <h5 className="card-title">{content.title}</h5>
-                    {content.youtube && (
-                      <iframe
-                        title={content.title}
-                        src={`https://www.youtube.com/embed/${getYouTubeID(
-                          content.youtube
-                        )}`}
-                        width="100%"
-                        height="315"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    )}
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteContent(content.id)}
-                    >
-                      <FaTrash /> Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {activeTab === "students" && (
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Students</h5>
-                {loading ? (
-                  <p>Loading...</p>
-                ) : enrolledStudents.length > 0 ? (
+              <div>
+                {course.contents.length === 0 ? (
+                  <p>No content available.</p>
+                ) : (
                   <ul>
-                    {enrolledStudents.map((student, index) => (
-                      <li key={index}>
-                        {student.name} (ID: {student.id})
+                    {course.contents.map((content) => (
+                      <li key={content.id}>
+                        <h5>{content.title}</h5>
+                        <a
+                          href={content.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Watch on YouTube
+                        </a>
                       </li>
                     ))}
                   </ul>
-                ) : (
-                  <p>No students enrolled yet.</p>
                 )}
               </div>
             </div>
           )}
+
+
+          
+          {activeTab === "students" && (
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Students</h5>
+              {loading ? (
+                <p>Loading...</p>
+              ) : enrolledStudents.length > 0 ? (
+                <ul>
+                  {enrolledStudents.map((student, index) => (
+                    <li key={index}>
+                      {student.name} (ID: {student.id})
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No students enrolled yet.</p>
+              )}
+            </div>
+          </div>
+        )}
+
 
           {activeTab === "comments" && (
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Comments</h5>
 
-                {course.ratings.length > 0 ? (
-                  course.ratings.map((rating, index) => (
-                    <div
+              
+              {/* Comment Section */}
+              <div className="d-flex justify-content-end mb-3">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => setShowAddCommentForm((prev) => !prev)}
+                >
+                  {showAddCommentForm ? "Cancel" : "New Comment"}
+                </button>
+              </div>
+
+              {/* Add Comment Form */}
+              {showAddCommentForm && (
+                <div className="mb-4">
+                  <div className="mb-3">
+                    <label htmlFor="commentInput" className="form-label">
+                      Add a Comment
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="commentInput"
+                      placeholder="Write your comment here..."
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Rating Input */}
+                  <div className="mb-3">
+                    <label htmlFor="ratingInput" className="form-label">Rating</label>
+                    <select
+                      className="form-control"
+                      id="ratingInput"
+                      value={newRating}
+                      onChange={(e) => setNewRating(Number(e.target.value))} // Convert the value to a number
+                    >
+                      <option value={0}>Select Rating</option>
+                      <option value={1}>1 Star</option>
+                      <option value={2}>2 Stars</option>
+                      <option value={3}>3 Stars</option>
+                      <option value={4}>4 Stars</option>
+                      <option value={5}>5 Stars</option>
+                    </select>
+                  </div>
+
+                  <div className="d-flex justify-content-end">
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleAddComment} // Ensure this function is defined as above
+                    >
+                      Submit Comment
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+              <div>
+                {course.ratings.length === 0 ? (
+                  <p>No comments available.</p>
+                ) : (
+                  <ul>
+                    {course.ratings.map((rating, index) => (
+                      <div
+
                       key={index}
                       className="comment mb-3 p-3 rounded border"
                       style={{ backgroundColor: "#f9f9f9" }}
@@ -489,29 +512,11 @@ function CourseDetail({ course }) {
                       </div>
                       <p className="card-text mt-2 mb-0">{rating.comment}</p>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-muted">No comments yet.</p>
+                    ))}
+                  </ul>
                 )}
+              </div>
 
-                {/* Comment input box */}
-                <div className="mb-3">
-                  <label htmlFor="commentInput" className="form-label">
-                    Add a Comment
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="commentInput"
-                    placeholder="Write your comment here..."
-                    value={newComment}
-                    onChange={handleCommentChange}
-                  />
-                </div>
-
-                <button className="btn btn-primary" onClick={handleAddComment}>
-                  Submit Comment
-                </button>
               </div>
             </div>
           )}
@@ -523,8 +528,6 @@ function CourseDetail({ course }) {
 
 CourseDetail.propTypes = {
   course: PropTypes.shape(courseItemShape).isRequired,
-  onEditCourse: PropTypes.func.isRequired,
-  onAddContent: PropTypes.func.isRequired,
 };
 
 export default CourseDetail;
