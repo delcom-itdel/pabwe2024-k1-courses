@@ -16,6 +16,7 @@ import {
   asyncAddContent,
   asyncDeleteContent,
   asyncChangeContentStatus,
+  asyncChangeStudentRatings,
 } from "../states/courses/action";
 import { useParams } from "react-router-dom";
 const { getAllUsers, postAddStudent, getMe } = api;
@@ -45,7 +46,6 @@ function CourseDetail({ course }) {
 
   const [showAddCommentForm, setShowAddCommentForm] = useState(false);
   const [newComment, setNewComment] = useState(""); // State for new comment input
-  const [comments, setComments] = useState(course?.comments || []); // State to manage comments
   const [studentIdToAdd, setStudentIdToAdd] = useState("");
   const [currentUserID, setCurrentUserID] = useState(null);
   const [newRating, setNewRating] = useState(0);
@@ -103,7 +103,6 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
-      setComments(course.comments || []);
     }
   }, [course]);
 
@@ -174,12 +173,10 @@ function CourseDetail({ course }) {
     dispatch(asyncDetailCourse(course.id));
   };
 
-  const handleCommentChange = (event) => {
-    setNewComment(event.target.value);
-  };
+
 
   const handleAddComment = async () => {
-    if (newComment.trim() === "" || rating === 0) return; // Ensure both comment and rating are provided
+    if (newComment.trim() === "") return; // Ensure both comment and rating are provided
 
     try {
       await dispatch(
@@ -520,7 +517,6 @@ function CourseDetail({ course }) {
                             Cancel
                           </button>
                         </div>
-                        ++ ++++++++++
                       </div>
                     ) : (
                       <div>
@@ -710,6 +706,6 @@ CourseDetail.propTypes = {
   course: PropTypes.shape(courseItemShape).isRequired,
   onEditCourse: PropTypes.func.isRequired,
   onAddContent: PropTypes.func.isRequired,
-};
+ };
 
 export default CourseDetail;
