@@ -1,6 +1,6 @@
 body {
   background-color: #f0f4f8; /* Tetap menggunakan soft light blue */
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   margin-bottom: 50px;
 }
 
@@ -14,7 +14,7 @@ a {
 
 .nav-item {
   display: table-cell;
-  background: #0d6efd2e; /* Tetap */
+  background: #a154d6; /* Tetap */
 }
 
 .nav-profile {
@@ -75,8 +75,14 @@ a {
 }
 
 @keyframes fadeInBody {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .d-flex {
@@ -87,8 +93,14 @@ a {
 }
 
 @keyframes slideIn {
-  0% { opacity: 0; transform: translateX(-20px); }
-  100% { opacity: 1; transform: translateX(0); }
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 img.rounded-circle {
@@ -102,9 +114,17 @@ img.rounded-circle {
 }
 
 @keyframes bounceIn {
-  0% { opacity: 0; transform: translateY(-20px); }
-  60% { opacity: 1; transform: translateY(10px); }
-  100% { transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 img.rounded-circle:hover {
@@ -124,8 +144,14 @@ img.rounded-circle:hover {
 }
 
 @keyframes tableSlideIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .table-bordered th,
@@ -137,8 +163,14 @@ img.rounded-circle:hover {
 }
 
 @keyframes fadeInTableData {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 th {
@@ -149,8 +181,14 @@ th {
 }
 
 @keyframes fadeInTableHeader {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 td {
@@ -166,8 +204,14 @@ hr {
 }
 
 @keyframes hrSlideIn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .course-list {
@@ -329,8 +373,8 @@ hr {
   background-color: #554bdb;
 }
 
-.bg-custom-purple{
-  background-color: #6c63ff;
+.bg-custom-purple {
+  background-color: #a154d6;
 }
 
 /* Spesifik untuk WelcomePage */
@@ -393,7 +437,6 @@ hr {
   color: #6c63ff;
   border: 2px solid #6c63ff;
 }
-
 
 /* Spesifik untuk LoginPage */
 .login-page .login-right-section {
@@ -468,16 +511,25 @@ hr {
 .welcome-text {
   text-align: justify; /* Menambahkan justify agar teks rapi */
   margin: 40px 0;
-  font-size: 1.2rem;
+  font-size: 16px;
   color: #333;
-  padding: 0 20px;
+  padding: 35px 10px 5px 30px;
   max-width: 100%; /* Sejajarkan dengan slider */
   margin-left: auto;
   margin-right: auto;
 }
 
+strong {
+  color: black; /* Default color */
+  transition: color 0.3s ease; /* Smooth transition */
+}
+
+strong:hover {
+  color: #9900ff; /* Change color on hover */
+}
+
 .courses-header h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   margin: 0;
 }
@@ -486,7 +538,7 @@ hr {
   display: flex;
   justify-content: space-between; /* Pastikan ada spasi antara dua elemen */
   align-items: center; /* Agar sejajar secara vertikal */
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   max-width: 1200px; /* Menyamakan dengan lebar list course */
   margin-left: auto; /* Membuat posisi tengah */
   margin-right: auto; /* Membuat posisi tengah */
@@ -495,21 +547,21 @@ hr {
 }
 
 .see-all {
-  color: lightblue;
-  font-size: 14px;
+  color: #a154d6;
+  font-size: 17px;
   cursor: pointer;
   font-weight: bold; /* Membuat tulisan bold */
   text-decoration: none; /* Hilangkan underline */
+  margin-right: 33px; /* Membuat posisi tengah */
 }
-
 
 /* Course List Section */
 .course-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px; /* Jarak antar kursus */
+  gap: 37px; /* Jarak antar kursus */
   justify-content: center;
-  margin-bottom: 50px; /* Ruang lebih di bawah */
+  margin-bottom: 170px; /* Ruang lebih di bawah */
 }
 
 .course-card-link {
@@ -523,7 +575,7 @@ hr {
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px #ff97ee;
   text-align: center;
   padding-bottom: 10px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease; /* Animasi lembut */
@@ -533,7 +585,7 @@ hr {
 
 .course-card:hover {
   transform: scale(1.03); /* Efek zoom lembut */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px #ff97ee;
 }
 
 .course-cover img {
@@ -566,12 +618,12 @@ hr {
   margin-top: 10px;
   line-height: 1.4;
   text-align: left;
-  
+
   /* Membatasi deskripsi menjadi maksimal 3 baris */
   display: -webkit-box; /* Flexbox untuk elemen */
   -webkit-line-clamp: 3; /* Membatasi hanya 3 baris */
   -webkit-box-orient: vertical;
-  
+
   overflow: hidden; /* Sembunyikan bagian teks yang melebihi batas */
   text-overflow: ellipsis; /* Tambahkan ellipsis jika teks terlalu panjang */
 }
@@ -581,8 +633,8 @@ hr {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: red;
-  color: white;
+  background-color: zero;
+  color: rgb(3, 0, 0);
   border: none;
   border-radius: 50%;
   width: 30px;
@@ -607,7 +659,7 @@ hr {
 .faq-section {
   display: flex;
   justify-content: space-between;
-  background-color: #d0e7f9; /* Soft blue background */
+  background-color: #ff97ee; /* Soft blue background */
   padding: 40px 20px; /* Ruang lebih */
   margin: 50px 0;
   border-radius: 10px;
@@ -617,6 +669,7 @@ hr {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 0;
 }
 
 .left-image-fixed {
@@ -629,7 +682,7 @@ hr {
 .single-image {
   width: 300px;
   height: 300px;
-  background-color: #add8e6;
+  background-color: #b5a2ff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -645,12 +698,12 @@ hr {
 
 /* Dropdown Header */
 .dropdown-header {
-  background-color: #808080; /* Warna tetap abu-abu */
+  background-color: #ffffff; /* Warna tetap abu-abu */
   padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: rgb(68, 68, 68);
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s ease;
@@ -662,22 +715,35 @@ hr {
 
 /* Hilangkan perubahan warna saat hover */
 .dropdown-header:hover {
-  background-color: #808080; /* Tidak berubah warna */
+  background-color: #ffffff; /* Tidak berubah warna */
 }
 
 /* Dropdown Body */
 .dropdown-body {
   padding: 15px;
-  background-color: #666666;
-  color: white;
+  background-color: white;
+  color: rgb(113, 113, 113);
   margin-top: -5px;
   border-radius: 5px;
   display: block;
+  max-height: 200px; /* Limit height if needed */
+  overflow-y: auto; /* Add scroll for longer content */
+  word-wrap: break-word; /* Ensures long words break into the next line */
+  white-space: normal; /* Allows the text to wrap naturally */
+  padding: 10px; /* Add some padding for better readability */
+  transition: max-height 0.5s ease-in-out; /* Smooth dropdown animation */
 }
 
 /* Nonaktifkan perubahan warna saat hover dropdown-body */
 .dropdown-body:hover {
-  background-color: #666666; /* Tetap sama */
+  background-color: #ffffff; /* Tetap sama */
+}
+
+/* Atur ukuran ikon dropdown menjadi kecil */
+.dropdown-icon {
+  width: 16px; /* Atur lebar ikon sesuai kebutuhan */
+  height: 16px; /* Atur tinggi ikon sesuai kebutuhan */
+  margin-left: 10px; /* Beri sedikit jarak antara teks dan ikon */
 }
 
 /* Why Us Section */
@@ -761,7 +827,7 @@ hr {
 
 /* Footer Styles */
 .footer {
-  background-color: #808080;
+  background-color: #a154d6;
   padding: 40px 20px;
   color: #fff;
 }
@@ -773,11 +839,6 @@ hr {
   margin: 0 auto;
 }
 
-.footer-left h3 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
 .footer-middle,
 .footer-right,
 .footer-address {
@@ -785,12 +846,14 @@ hr {
 }
 
 .footer-middle ul,
-.footer-right ul {
+.footer-right ul,
+.footer-address ul {
   list-style-type: none;
   padding: 0;
 }
 
 .footer-middle ul li,
+.footer-right ul li,
 .footer-right ul li {
   display: flex;
   align-items: center;
@@ -798,7 +861,8 @@ hr {
 }
 
 .footer-middle img,
-.footer-right img {
+.footer-right img,
+.footer-address img {
   width: 20px;
   height: 20px;
   margin-right: 10px;
@@ -813,17 +877,25 @@ hr {
 .footer-middle h4,
 .footer-right h4 {
   margin-bottom: 10px;
+  color: black;
+  font-weight: bold;
 }
-/* Instructor and Team Section */
-.instructor-section,
+
+.instructor-section {
+  margin-top: 230px;
+  margin-bottom: 180px;
+  text-align: center;
+}
+
 .team-section {
-  margin-top: 40px;
+  margin-top: 165px;
+  margin-bottom: 100px;
   text-align: center;
 }
 
 .instructor-section h2,
 .team-section h2 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -831,7 +903,9 @@ hr {
 .instructor-section p,
 .team-section p {
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 2px;
+  margin-left: 60px;
+  margin-right: 60px;
 }
 
 .profile-grid {
@@ -839,7 +913,7 @@ hr {
   grid-template-columns: repeat(3, 1fr); /* Buat 3 gambar dalam satu baris */
   gap: 20px; /* Jarak antar gambar */
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 50px;
 }
 
@@ -875,3 +949,24 @@ hr {
   color: #666;
 }
 
+/* Efek Glow pada border */
+.glow-effect {
+  transition: border 0.4s ease, box-shadow 0.4s ease;
+  border: 2px solid transparent; /* Awalnya tanpa border */
+  border-radius: 10px; /* Sesuaikan radius border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Default shadow */
+}
+
+.glow-effect:hover {
+  border-color: #ff97ee; /* Border bersinar saat hover */
+  box-shadow: 0 0 15px 3px #ff97ee; /* Cahaya dari border */
+}
+
+.faq-section.glow-effect {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ff97ee; /* Soft blue background */
+  padding: 40px 20px; /* Ruang lebih */
+  margin: 50px 0;
+  border-radius: 10px;
+}
