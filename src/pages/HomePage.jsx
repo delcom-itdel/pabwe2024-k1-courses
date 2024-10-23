@@ -9,9 +9,9 @@ import {
 
 // Image array for the top section (replace with your actual image paths)
 const sliderImages = [
-  "/pic1.png", // Add correct image paths here
-  "/pic3.png",
-  "/pic2.png",
+  "/1.png", // Add correct image paths here
+  "/3.png",
+  "/2.png",
   
 ];
 
