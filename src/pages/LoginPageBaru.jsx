@@ -29,7 +29,7 @@ function LoginPageBaru() {
           <h2>Login</h2>
           <div className="login-image-section">
             <img
-              src="src/pages/login.jpg"
+              src="public\assets\vendor\login.jpg"
               alt="Login Illustration"
               className="login-image-large"
             />

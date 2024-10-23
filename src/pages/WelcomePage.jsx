@@ -8,7 +8,7 @@ function WelcomePage() {
       <div className="welcome-container">
         <div className="welcome-left-section">
           <h2>Welcome to Courses Web</h2>
-          <img src="src/pages/home.jpg" alt="Welcome Illustration" />
+          <img src="public\assets\vendor\home.jpg" alt="Welcome Illustration" />
           <Link to="/login">
             <button className="btn primary">Login</button>
           </Link>
