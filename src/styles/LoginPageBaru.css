@@ -14,43 +14,46 @@
   justify-content: center;
   align-items: center;
   background-color: white;
-  padding: 20px; /* Kurangi padding */
-  border-radius: 15px; /* Kurangi border radius */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Tambahkan shadow */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 300px; /* Kurangi lebar maksimal */
+  max-width: 300px;
   border: none;
+}
+
+/* Gambar */
+.login-image-section {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.login-image-large {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  margin-bottom: 5px;
 }
 
 /* Judul Login */
 .login-form-section h2 {
   text-align: center;
-  color: #6c63ff;
-  font-size: 22px; /* Kurangi ukuran font */
-  margin-bottom: 5px; /* Kurangi jarak bawah */
-  margin-top: 5px; /* Kurangi jarak atas judul */
-  text-transform: uppercase; /* Jadikan huruf kapital semua */
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, #6c63ff, #554bdb); /* Gradient warna */
+  font-size: 28px; /* Perbesar ukuran font */
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase; /* Huruf kapital */
+  letter-spacing: 3px; /* Jarak antar huruf lebih besar */
+  background: linear-gradient(90deg, #a154d6, #ff97ee); /* Gradient warna modern */
   -webkit-background-clip: text;
   color: transparent;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Shadow untuk efek lebih modern */
+  animation: fadeIn 1s ease-in-out;
   transition: transform 0.3s ease;
 }
 
-/* Gambar */
-/* Gambar diletakkan tepat di bawah judul */
-.login-image-section {
-  display: flex;
-  justify-content: center;
-  margin: 5px 0; /* Kurangi jarak antara gambar dan form input */
-}
-
-.login-image-large {
-  width: 100%;
-  max-width: 350px; /* Kurangi ukuran gambar */
-  height: auto;
-  margin-bottom: 5px; /* Kurangi jarak bawah gambar */
+.login-form-section h2:hover {
+  transform: scale(1.1); /* Perbesar saat hover */
 }
 
 /* Form input */
@@ -65,17 +68,16 @@
 .login-inputs {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Kurangi jarak antar input */
+  gap: 8px;
   width: 100%;
 }
 
-/* Input form */
 .input-group {
   display: flex;
   align-items: center;
   background-color: #f7f7f7;
-  border-radius: 20px; /* Kurangi border radius */
-  padding: 8px; /* Kurangi padding */
+  border-radius: 20px;
+  padding: 8px;
   border: 1px solid #76b39d;
 }
 
@@ -84,48 +86,29 @@
   outline: none;
   background: none;
   flex: 1;
-  font-size: 12px; /* Kurangi ukuran font input */
+  font-size: 12px;
 }
 
 /* Tombol login */
 .btn.primary {
-  background-color: #6c63ff;
+  background-color: #a154d6; /* Warna utama untuk tombol */
   color: white;
-  padding: 8px; /* Kurangi padding tombol */
-  border-radius: 20px; /* Kurangi border radius */
+  padding: 10px;
+  border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn.primary:hover {
-  background-color: #554bdb;
+  background-color: #ff97ee; /* Warna hover yang sesuai */
+  transform: translateY(-3px); /* Efek hover naik sedikit */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Shadow saat hover */
 }
 
-/* Hapus background yang mungkin muncul di container luar */
-.w-300px {
-  background-color: transparent; /* Pastikan background luar transparan */
-  box-shadow: none; /* Hapus shadow jika ada */
-  border: none; /* Hilangkan border */
-}
-
-/* Animasi dan style untuk judul Login */
-.login-form-section h2 {
-  text-align: center;
-  color: #6c63ff;
-  font-size: 22px; /* Kurangi ukuran font */
-  font-weight: bold;
-  margin-bottom: 10px; /* Kurangi margin */
-  letter-spacing: 2px; /* Tambahkan jarak antar huruf */
-  text-transform: uppercase; /* Jadikan huruf kapital semua */
-  background: linear-gradient(90deg, #6c63ff, #554bdb); /* Gradient warna */
-  -webkit-background-clip: text; /* Clip gradient ke teks */
-  color: transparent; /* Buat warna teks transparan untuk gradient */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Tambahkan shadow */
-  transition: transform 0.3s ease; /* Animasi untuk efek hover */
-}
-
-.login-form-section h2:hover {
-  transform: scale(1.05); /* Perbesar sedikit saat hover */
+/* Fade-in animation untuk teks judul */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
