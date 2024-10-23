@@ -81,6 +81,22 @@ const api = (() => {
     return user;
   }
 
+  async function getAllUsers() {
+    const response = await _fetchWithAuth(`${BASE_URL}/users`);
+    const responseJson = await response.json();
+    const { success, message } = responseJson;
+
+    if (success !== true) {
+      throw new Error(message);
+    }
+
+    const {
+      data: { users },
+    } = responseJson;
+
+    return users;
+  }
+
   async function postChangePhotoProfile({ photoFile }) {
     const formData = new FormData();
     formData.append("photo", photoFile);
@@ -386,6 +402,7 @@ const api = (() => {
     postAuthRegister,
     postAuthLogin,
     getMe,
+    getAllUsers,
     postChangePhotoProfile,
     postAddCourse,
     postChangeCoverCourse,

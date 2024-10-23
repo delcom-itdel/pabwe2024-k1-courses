@@ -17,6 +17,7 @@ import {
   asyncDeleteContent,
 } from "../states/courses/action";
 import { useParams } from "react-router-dom";
+const { getAllUsers } = api;
 
 function CourseDetail({ course }) {
   const { id } = useParams();
@@ -34,7 +35,8 @@ function CourseDetail({ course }) {
   const [showAddContentForm, setShowAddContentForm] = useState(false); // State to show/hide content form
   const [newContentTitle, setNewContentTitle] = useState(""); // State for new content title
   const [newContentYoutube, setNewContentYoutube] = useState("");
-
+  const [enrolledStudents, setEnrolledStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState(""); // State for new comment input
   const [comments, setComments] = useState(course?.comments || []); // State to manage comments
 
@@ -50,6 +52,27 @@ function CourseDetail({ course }) {
       dispatch(asyncDetailCourse(id));
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    // Function to fetch and filter students
+    const fetchStudents = async () => {
+      try {
+        const allUsers = await getAllUsers(); // Use the imported async function
+        console.log("sucess");
+        // Assume `course.students` contains the list of enrolled student IDs
+        const matchedStudents = allUsers.filter((user) =>
+          course.students.includes(user.id)
+        );
+        setEnrolledStudents(matchedStudents);
+      } catch (error) {
+        console.error("Failed to fetch users:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
 
   useEffect(() => {
     if (course) {
@@ -397,10 +420,12 @@ function CourseDetail({ course }) {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Students</h5>
-                {course.studentDetails && course.studentDetails.length > 0 ? (
+                {loading ? (
+                  <p>Loading...</p>
+                ) : enrolledStudents.length > 0 ? (
                   <ul>
-                    {course.studentDetails.map((student) => (
-                      <li key={student.id}>
+                    {enrolledStudents.map((student, index) => (
+                      <li key={index}>
                         {student.name} (ID: {student.id})
                       </li>
                     ))}
