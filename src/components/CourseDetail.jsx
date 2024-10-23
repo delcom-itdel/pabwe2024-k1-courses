@@ -16,10 +16,9 @@ import {
   asyncAddContent,
   asyncDeleteContent,
   asyncChangeContentStatus,
-  asyncChangeStudentRatings,
 } from "../states/courses/action";
 import { useParams } from "react-router-dom";
-const { getAllUsers, postAddStudent, getMe } = api;
+const { getAllUsers, postAddStudent, deleteStudent, getMe } = api;
 
 function CourseDetail({ course }) {
   const { id } = useParams();
@@ -46,6 +45,7 @@ function CourseDetail({ course }) {
 
   const [showAddCommentForm, setShowAddCommentForm] = useState(false);
   const [newComment, setNewComment] = useState(""); // State for new comment input
+  const [comments, setComments] = useState(course?.comments || []); // State to manage comments
   const [studentIdToAdd, setStudentIdToAdd] = useState("");
   const [currentUserID, setCurrentUserID] = useState(null);
   const [newRating, setNewRating] = useState(0);
@@ -103,12 +103,14 @@ function CourseDetail({ course }) {
       setEditedTitle(course.title);
       setEditedDescription(course.description);
       setPreviewCover(course.cover);
+      setComments(course.comments || []);
     }
   }, [course]);
 
   const handleAddStudent = async () => {
     if (!currentUserID) {
       console.error("User ID not available");
+      alert("User ID not available. Please try again.");
       return;
     }
 
@@ -120,9 +122,40 @@ function CourseDetail({ course }) {
 
       dispatch(asyncAddStudent({ id: course.id, user_id: currentUserID }));
       dispatch(asyncDetailCourse(course.id)); // Refresh course details
-      console.log("Student added successfully");
+
+      alert("Student added successfully!");
+
+      // Refresh the page to reflect the updated state
+      window.location.reload();
     } catch (error) {
       console.error("Failed to add student:", error.message);
+      alert("User already a student in this course.");
+    }
+  };
+
+  const handleRemoveStudent = async () => {
+    if (!currentUserID) {
+      console.error("User ID not available");
+      alert("User ID not available. Please try again.");
+      return;
+    }
+
+    try {
+      await api.deleteStudent({
+        id: course.id,
+        user_id: currentUserID,
+      });
+
+      dispatch(asyncDeleteStudent({ id: course.id, user_id: currentUserID }));
+      dispatch(asyncDetailCourse(course.id)); // Refresh course details
+
+      alert("You have been unenrolled from the course.");
+
+      // Refresh the page to reflect the updated state
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to remove student:", error.message);
+      alert("You are not enrolled in this course.");
     }
   };
 
@@ -173,10 +206,12 @@ function CourseDetail({ course }) {
     dispatch(asyncDetailCourse(course.id));
   };
 
-
+  const handleCommentChange = (event) => {
+    setNewComment(event.target.value);
+  };
 
   const handleAddComment = async () => {
-    if (newComment.trim() === "") return; // Ensure both comment and rating are provided
+    if (newComment.trim() === "" || rating === 0) return; // Ensure both comment and rating are provided
 
     try {
       await dispatch(
@@ -299,7 +334,7 @@ function CourseDetail({ course }) {
             <div className="d-flex justify-content-between align-items-center">
               {/* Display the title, average rating, and enrolled students count */}
               <h5 className="mb-0">
-                {course.title}{" "}
+                {course.title} <p>By: {course.author.name} </p>
                 {course.avg_ratings && (
                   <span className="text-warning">
                     <FaStar /> {course.avg_ratings}
@@ -517,6 +552,7 @@ function CourseDetail({ course }) {
                             Cancel
                           </button>
                         </div>
+                        ++ ++++++++++
                       </div>
                     ) : (
                       <div>
@@ -706,6 +742,6 @@ CourseDetail.propTypes = {
   course: PropTypes.shape(courseItemShape).isRequired,
   onEditCourse: PropTypes.func.isRequired,
   onAddContent: PropTypes.func.isRequired,
- };
+};
 
 export default CourseDetail;
