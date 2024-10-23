@@ -1,21 +1,31 @@
-.welcome-page {
+.welcome-page { 
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Pastikan ini mengambil seluruh tinggi layar */
-  margin: 0; /* Hilangkan margin default */
-  background-color: transparent; /* Set background transparan */
+  height: 100vh;
+  margin: 0;
+  background-color: transparent;
+  padding: 10px;
+  text-align: center;
 }
 
 .welcome-container {
-  max-width: 350px;
+  max-width: 300px;
   width: 100%;
   padding: 20px;
-  background-color: #ffffff; /* Hanya box ini yang memiliki latar putih */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan ke box */
-  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
   text-align: center;
+  overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-height: 80vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 /* Scale animation on hover */
@@ -29,7 +39,7 @@
   font-size: 26px;
   font-weight: bold;
   color: #6c63ff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-transform: uppercase;
   letter-spacing: 1px;
   background: linear-gradient(90deg, #6c63ff, #554bdb);
@@ -41,30 +51,31 @@
 
 /* Welcome image with larger size and slight transition */
 .welcome-left-section img {
-  max-width: 150%; /* Ubah ukuran maksimum gambar menjadi lebih besar */
+  max-width: 70%;
   height: auto;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   transition: transform 0.3s ease;
 }
 
 .welcome-left-section img:hover {
-  transform: scale(1.1); /* Perbesar sedikit saat hover */
+  transform: scale(1.1);
 }
-
 
 /* Buttons for login and register with the same size */
 .welcome-page .btn {
-  width: 80%; /* Pastikan lebar kedua tombol sama */
-  padding: 14px; /* Menggunakan padding dari tombol Register */
-  font-size: 16px; /* Ukuran font yang sama */
-  border-radius: 30px;
-  margin: 10px 0;
+  width: 80%; /* Lebih kecil dari sebelumnya */
+  padding: 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  margin: 8px 0;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
 }
 
-
 .welcome-page .btn.primary {
-  background-color: #6c63ff;
+  background-color: #6c63ff; /* Warna utama */
   color: white;
 }
 
@@ -74,11 +85,19 @@
   border: 2px solid #6c63ff;
 }
 
-.welcome-page .btn:hover {
-  transform: translateY(-3px); /* Lift the button on hover */
-  background-color: #554bdb;
+.welcome-page .btn.primary:hover {
+  transform: translateY(-3px);
+  background-color: #a154d6;
   color: #ffffff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  
+}
+.welcome-page .btn.secondary:hover {
+  transform: translateY(-3px);
+  background-color: #a154d6;
+  color: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
 }
 
 /* Fade-in animation for text */
