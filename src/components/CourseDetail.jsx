@@ -17,7 +17,7 @@ import {
   asyncDeleteContent,
 } from "../states/courses/action";
 import { useParams } from "react-router-dom";
-const { getAllUsers } = api;
+const { getAllUsers, postAddStudent, getMe } = api;
 
 function CourseDetail({ course }) {
   const { id } = useParams();
@@ -39,6 +39,8 @@ function CourseDetail({ course }) {
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState(""); // State for new comment input
   const [comments, setComments] = useState(course?.comments || []); // State to manage comments
+  const [studentIdToAdd, setStudentIdToAdd] = useState("");
+  const [currentUserID, setCurrentUserID] = useState(null);
 
   const getYouTubeID = (url) => {
     const regex =
@@ -58,7 +60,7 @@ function CourseDetail({ course }) {
     const fetchStudents = async () => {
       try {
         const allUsers = await getAllUsers(); // Use the imported async function
-        console.log("sucess");
+        console.log("success");
         // Assume `course.students` contains the list of enrolled student IDs
         const matchedStudents = allUsers.filter((user) =>
           course.students.includes(user.id)
@@ -82,6 +84,28 @@ function CourseDetail({ course }) {
       setComments(course.comments || []);
     }
   }, [course]);
+
+  const handleAddStudent = async () => {
+    try {
+      // Make sure a student ID is entered before proceeding
+      if (!studentIdToAdd.trim()) {
+        alert("Please enter a student ID.");
+        return;
+      }
+
+      // Use the asyncAddStudent action and postAddStudent function
+      await postAddStudent({ courseId: course.id, studentId: studentIdToAdd });
+      dispatch(asyncAddStudent({ id: course.id, studentId: studentIdToAdd }));
+
+      // Clear the input field after adding
+      setStudentIdToAdd("");
+
+      // Fetch the updated course details
+      dispatch(asyncDetailCourse(course.id));
+    } catch (error) {
+      console.error("Failed to add student:", error.message);
+    }
+  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -235,6 +259,12 @@ function CourseDetail({ course }) {
                   {enrolledStudentsCount} students enrolled
                 </span>
               </h5>
+              <button
+                className="btn btn-outline-primary mt-2"
+                onClick={handleAddStudent}
+              >
+                Add Student
+              </button>
               <div>
                 <button
                   className="btn btn-outline-primary me-2"
