@@ -7,11 +7,26 @@ function Navigation({ authLogin, onAuthSignOut }) {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-custom-purple"> 
+      <nav className="navbar navbar-expand-lg navbar-dark bg-custom-purple">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            Delta Courses
+            <img
+              className="nav-profile me-2"
+              src="/delta_logo.png"
+              alt="Logo"
+            />
+            <span
+              className="navbar-text"
+              style={{
+                fontWeight: "bolder",
+                fontSize: "1.75rem",
+                color: "white",
+              }}
+            >
+              D E L T A
+            </span>
           </Link>
+
           <button
             className="navbar-toggler"
             type="button"
